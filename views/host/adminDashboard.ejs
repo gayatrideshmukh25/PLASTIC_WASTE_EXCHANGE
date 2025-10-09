@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
+</head>
+<body>
+      <%- include ('../partials/header.ejs') %>
+      <%- include ('../partials/profile.ejs') %>
+
+    <div class="Hcontainer">
+        <div class="dashboard-grid">
+            <!-- Users Card -->
+            <div class="card">
+                <h2>All Users</h2>
+                <ul>
+                    <li>Tanmay - User</li>
+                    <li>Riya - User</li>
+                    <li>Rahul - User</li>
+                </ul>
+                <a href="/admin/users/add" class="btn">Add User</a>
+            </div>
+
+            <!-- Collectors Card -->
+            <div class="card">
+                <h2>All Collectors</h2>
+                <ul>
+                    <li>Collector 1</li>
+                    <li>Collector 2</li>
+                </ul>
+                <a href="/admin/collectors/add" class="btn">Add Collector</a>
+            </div>
+
+            <!-- Reports Card -->
+            <div class="card">
+                <h2>Reports & Statistics</h2>
+                <ul>
+                    <li>Total Plastic Collected: 120 kg</li>
+                    <li>Total Rewards Redeemed: 50</li>
+                </ul>
+                <a href="/admin/reports/details" class="btn">View Details</a>
+            </div>
+        </div>
+    </div>
+    <%- include ('../partials/footer.ejs') %>
+    <script>
+    const shortcut = document.getElementById('profile-shortcut');
+    const modal = document.getElementById('profile-modal');
+    const closeBtn = document.getElementById('close-modal');
+
+    // Show modal when clicking shortcut
+    shortcut.addEventListener('click', () => {
+        modal.style.display = 'flex';
+    });
+
+    // Close modal
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    // Close when clicking outside content
+    window.addEventListener('click', (e) => {
+        if(e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+</script>
+</body>
+</html>

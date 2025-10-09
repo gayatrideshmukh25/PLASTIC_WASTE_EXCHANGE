@@ -1,0 +1,62 @@
+<main>
+    <div class="card">
+      <h1>Send Waste Pickup Request</h1>
+       <div class="location-section">
+      <h3>Find Nearest Collector</h3>
+      <button type="button" id="findLocationBtn">Use My Location</button>
+      <p id="locationStatus"></p>
+      <div id="nearestCollector"></div>
+    </div>
+    <hr>
+      <form id="wasteForm" method="post" action="/sendRequetst">
+        <div>
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" placeholder="Enter your name" required>
+        </div>
+        <div>
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" placeholder="e.g. +91-9876543210" required>
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com">
+        </div>
+        <div>
+          <label for="wasteType">Waste Type</label>
+          <select id="wasteType" name="wasteType" required>
+            <option value="">Select Waste Type</option>
+            <option value="dry">Dry / Recyclable</option>
+            <option value="wet">Wet / Organic</option>
+            <option value="e-waste">E-Waste</option>
+            <option value="hazardous">Hazardous</option>
+            <option value="bulk">Bulk Items</option>
+          </select>
+        </div>
+        <div>
+          <label for="quantity">Quantity</label>
+          <input type="text" id="quantity" name="quantity" placeholder="e.g. 3 bags / 5 kg">
+        </div>
+        <div class="full">
+          <label for="address">Pickup Address</label>
+          <textarea id="address" name="address" placeholder="Enter pickup location" required></textarea>
+        </div>
+        <div>
+          <label for="date">Preferred Date</label>
+          <input type="date" id="date" name="date">
+        </div>
+        <div>
+          <label for="time">Preferred Time</label>
+          <input type="time" id="time" name="time">
+        </div>
+        <div class="full">
+          <label for="notes">Additional Notes</label>
+          <textarea id="notes" name="notes" placeholder="Any extra details for pickup team"></textarea>
+        </div>
+        <div class="actions">
+          <button type="submit">Send Request</button>
+          <button type="reset" class="btn-secondary">Reset</button>
+        </div>
+        <div id="status"></div>
+      </form>
+    </div>
+  </main>

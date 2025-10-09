@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collector</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+<body>
+       <%- include ('../partials/header.ejs') %>
+        <%- include ('../partials/profile.ejs') %>
+     
+    <section class="Hcontainer">
+        <div class="dashboard-grid">
+          
+            <div class="card">
+                <h2>Pending Collection Tasks</h2>
+                <ul>
+                    <li>User: Tanmay - 5 kg Plastic Bottles - Location: Pune</li>
+                    <li>User: Riya - 2 kg Plastic Bags - Location: Mumbai</li>
+                    <li>User: Rahul - 3 kg Packaging Waste - Location: Nagpur</li>
+                </ul>
+                <a href="/collector/tasks/add" class="btn">Mark Task Completed</a>
+            </div>
+        </div>
+    </section>
+   
+   
+  <%- include ('../partials/footer.ejs') %>
+</body>
+</html>
