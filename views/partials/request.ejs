@@ -60,3 +60,46 @@
       </form>
     </div>
   </main>
+  <script>
+  const select = document.getElementsByTagName('select')[0];
+   
+document.getElementById('findLocationBtn').addEventListener('click', () => {
+  const locationStatus = document.getElementById('locationStatus');
+  locationStatus.textContent = "Fetching your location...";
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(success, error);
+  } else {
+    locationStatus.textContent = "Geolocation not supported by your browser.";
+  }
+
+  function success(position) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    locationStatus.textContent = `Your location: (${latitude.toFixed(4)}, ${longitude.toFixed(4)})`;
+
+    // 📡 Call your backend API to find nearest collector
+    fetch(`/nearestCollector?lat=${latitude}&lng=${longitude}`)
+      .then(res => res.json())
+      .then(data => {
+        const nearestDiv = document.getElementById('nearestCollector');
+        if (data && data.name) {
+          nearestDiv.innerHTML = `
+            <p><strong>Nearest Collector:</strong> ${data.name}</p>
+            <p><strong>Distance:</strong> ${data.distance} km</p>
+            <p><strong>Contact:</strong> ${data.phone}</p>
+          `;
+        } else {
+          nearestDiv.textContent = "No nearby collectors found.";
+        }
+      })
+      .catch(() => {
+        locationStatus.textContent = "Failed to fetch nearest collector.";
+      });
+  }
+
+  function error() {
+    locationStatus.textContent = "Unable to retrieve your location.";
+  }
+});
+</script>
