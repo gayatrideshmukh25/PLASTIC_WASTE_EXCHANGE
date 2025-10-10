@@ -1,0 +1,66 @@
+const conn = require('../Utils/database')
+class Collector {
+
+   constructor(fullname,email,password,userType,address,phone_no,city,state,pincode,availability){
+    this.fullname = fullname;
+    this.email = email;
+    this.password = password;
+    this.userType = userType;
+    this.address = address;
+    this.phone_no = phone_no;
+    this.city = city;
+    this.state = state;
+    this.pincode = pincode;
+    this.availability = availability;
+   }
+
+   save(){
+     const collector = `insert into collector (name,email,password,userType,address,phone_no,city,state,pincode,availability) values (?,?,?,?,?,?,?,?,?,?);`
+
+    conn.query(collector,[this.fullname,this.email,this.password,this.userType,this.address,this.phone_no,this.city,this.state,this.pincode,this.availability],(err,result) => {
+        if(err){
+            console.log('error while insertin',err);
+            return;
+        }
+        console.log("successfully",result);
+   })
+}
+   static getCollector(email,callback){
+      const collector = `select * from collector 
+                  where email = ? ; `
+   conn.query(collector,[email],(err,result) => {
+    if(err){
+        console.log(err);
+        callback(err,null);
+        return;
+    }
+    else if(result.length === 0){
+        callback(null,null);
+        return;
+    }else{
+        console.log(result[0]);
+    callback(null,result[0]);
+    return;
+    }
+})
+   }
+   static getCollectorbyId(id,callback){
+      const collector = `select * from collector 
+                  where id = ? ; `
+   conn.query(collector,[id],(err,result) => {
+    if(err){
+        console.log(err);
+        callback(err,null);
+        return;
+    }
+    else if(result.length === 0){
+        callback(null,null);
+        return;
+    }else{
+    callback(null,result[0]);
+    return;
+    }
+})
+   }
+}
+module.exports = Collector;
