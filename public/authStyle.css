@@ -1,0 +1,107 @@
+
+        .authcontainer {
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(161,140,209,0.10);
+            padding: 2.5rem 2rem 2rem 2rem;
+            max-width: 400px;
+            width: 90vw;
+            margin: 4rem auto 0 auto;
+            text-align: center;
+            animation: fadeIn 0.7s;
+        }
+        
+        .authcontainer h2 {
+            color: #7b2ff2;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            font-size: 2rem;
+        }
+        .authcontainer input[type="text"],
+        .authcontainer input[type="email"],
+        .authcontainer input[type="password"],
+        .authcontainer input[type="tel"],
+        .authcontainer select,
+         .authcontainer textarea {
+            width: 90%;
+            padding: 0.9rem 1rem;
+            margin-bottom: 1.2rem;
+            border: 1.5px solid #e0d7f7;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: #f3e8ff;
+            color: #5e548e;
+            transition: border 0.2s;
+        }
+        .authcontainer input:focus,
+         .authcontainer select:focus,
+          .signup-container textarea:focus {
+            border: 1.5px solid #7b2ff2;
+            outline: none;
+            background: #fff;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 0.9rem 0;
+            background: #7b2ff2;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            box-shadow: 0 2px 8px rgba(123,47,242,0.08);
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        .submit-btn:hover {
+            background: #ff61a6;
+            box-shadow: 0 4px 16px rgba(255,97,166,0.16);
+        }
+        .authcontainer label {
+            display: block;
+            text-align: left;
+            margin-bottom: 0.3rem;
+            color: #5e548e;
+            font-weight: 500;
+        }
+        .form-footer {
+            margin-top: 1.5rem;
+            color: #5e548e;
+            font-size: 1rem;
+        }
+        .form-footer a {
+            color: #ff61a6;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .form-footer a:hover {
+            color: #7b2ff2;
+            text-decoration: underline;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-30px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+     
+        @media (max-width: 600px) {
+            .authcontainer {
+                padding: 1.2rem 0.5rem;
+            }
+            header h1 {
+                font-size: 1rem;
+                margin-left: 0.5rem;
+            }
+            nav {
+                margin-right: 0.5rem;
+            }
+        }
+
+
+
+
+
+
+
+       
