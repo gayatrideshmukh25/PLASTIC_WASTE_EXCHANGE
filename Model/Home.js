@@ -1,5 +1,6 @@
 const conn = require('../Utils/database')
 class User {
+
    constructor(fullname,email,password,userType,address,phone_no){
     this.fullname = fullname;
     this.email = email;

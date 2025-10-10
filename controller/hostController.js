@@ -1,7 +1,9 @@
 const  getSession  = require('../Utils/session');
 const Waste = require('../Model/plastic');
 const User = require('../Model/Home');
+const Collector = require('../Model/Collector');
 const conn  = require('../Utils/database');
+const session = require('express-session');
 
 exports.home = (req,resp,next) => {
     resp.render('host/home');
@@ -9,8 +11,8 @@ exports.home = (req,resp,next) => {
 
 exports.userDashboard = (req,resp,next) => {
       const  user = req.session.user;
-      const {id,email} = user;
-      User.getUser(email,(err,user) => {
+      const {id} = user;
+      User.getUserbyId(id,(err,user) => {
       Waste.getAllWaste(id,(wasteLogged) => {
       req.session.waste = wasteLogged;
       req.session.save((err) => {
@@ -25,26 +27,28 @@ exports.userDashboard = (req,resp,next) => {
 }
 
 exports.collectorDashboard = (req,resp,next) => {
-    const id = req.session.user.id;
-    User.getUserbyId(id,(err,user) => {
-        if(user.userType !== 'collector'){
+    const collector = req.session.user;
+    const id = req.session.collector.id;
+    Collector.getCollectorbyId(id,(err,collector) => {
+        if(collector.userType !== 'collector'){
             console.log("unauthorized access");
             return resp.redirect('/login');
         }
-    resp.render('host/collectorDashboard',{user : user});
+    resp.render('host/collectorDashboard',{user : collector});
     });
 }
 
 exports.adminDashboard =(req,resp,next) => {
-    const id = req.session.user.id;
-    User.getUserbyId(id,(err,user) => {
-        if(user.userType !== 'admin'){
+    console.log("Admin Dashboard accessed");
+    const admin = req.session.user;
+    const {userType} = admin;
+    if(userType !== 'admin'){
             console.log("unauthorized access");
             return resp.redirect('/login');
         }
-    resp.render('host/adminDashboard',{user : user});
-});
-}
+    resp.render('host/adminDashboard',{user : admin});
+};
+
 exports.logwaste = (req,resp,next) => {
     const id = req.session.user.id;
     resp.render('host/logwaste',{id : id});
