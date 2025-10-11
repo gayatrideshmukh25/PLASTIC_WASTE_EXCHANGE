@@ -74,9 +74,9 @@ exports.postlogin = (req,res,next) => {
             return  res.status(401).send("Invalid password");;
          } else {
          console.log("Admin found:",admin);
-         const {id,fullname,email,userType} = admin;
+         const {id,name,email,userType} = admin;
          console.log("Admin details:",id,name,email,userType);
-         req.session.user = {id: id,fullname: fullname,email:email, userType: userType};   
+         req.session.user = {id: id,name: name,email:email, userType: userType};   
          req.session.save((err)=>{
          if(err){
             console.log("Error saving session",err);

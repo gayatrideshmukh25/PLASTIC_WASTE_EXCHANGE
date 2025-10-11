@@ -1,8 +1,8 @@
 const conn = require('../Utils/database')
 class Collector {
 
-   constructor(fullname,email,password,userType,address,phone_no,city,state,pincode,availability){
-    this.fullname = fullname;
+   constructor(name,email,password,userType,address,phone_no,city,state,pincode,availability){
+    this.name = name;
     this.email = email;
     this.password = password;
     this.userType = userType;
@@ -17,7 +17,7 @@ class Collector {
    save(){
      const collector = `insert into collector (name,email,password,userType,address,phone_no,city,state,pincode,availability) values (?,?,?,?,?,?,?,?,?,?);`
 
-    conn.query(collector,[this.fullname,this.email,this.password,this.userType,this.address,this.phone_no,this.city,this.state,this.pincode,this.availability],(err,result) => {
+    conn.query(collector,[this.name,this.email,this.password,this.userType,this.address,this.phone_no,this.city,this.state,this.pincode,this.availability],(err,result) => {
         if(err){
             console.log('error while insertin',err);
             return;
