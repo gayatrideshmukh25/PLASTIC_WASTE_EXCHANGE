@@ -4,90 +4,82 @@ const User = require('../Model/Home');
 const Collector = require('../Model/Collector');
 const Waste = require('../Model/plastic');
 const { name } = require('ejs');
+const {validationResults,check} = require('express-validator');
+const { rejects } = require('assert');
 
 exports.login = (req,resp,next) => {
     resp.render('Auth/login');
 }
-exports.postlogin = (req,res,next) => {
+exports.postlogin =async (req,res,next) => {
     const {email,password,userType} = req.body;
+    
     if(!email || !password || !userType){
-        console.log("All fields are required");
-        return;
+        return res.status(400).send("All fields are required");
     }
-    if(userType == 'user'){
-    User.getUser(email,(err,user) => {
+    try {
+    let userData;
+    if( userType == 'user'){
+     userData = await new Promise ((resolve,reject) => {
+         User.getUser(email,(err,user) => {
         if (err) {
-        console.error("Database error:", err);
-        return;
-    }else if (!user) {
-        console.log("User not found");
-        return;
-    }else if(user.password !== password){
-         console.log('invalid password');
-         return;
-    } else
-    req.session.user = {id: user.id, userType: user.userType};
-
-           req.session.save((err) => {
-            if(err){
-                console.log("Error saving session",err);
-                return;
-            }
-        return res.redirect('/userDashboard');
-        })
-      });
-    } else if(userType == 'collector'){
+            console.error("database error : ",err);
+            reject(err);
+        } else {
+            resolve(user);
+        }
+     })
+    })} else if(userType == 'collector'){
+      userData = await new Promise((resolve,reject) => {
         Collector.getCollector(email,(err,collector) => {
         if (err) {
         console.error("Database error:", err);
-        return;
-        } else if (!collector) {
-        console.log("User not found");
-        return;
-        } else if(collector.password !== password){
-         console.log('invalid password');
-         return;
-        } else 
-        req.session.user = {id: collector.id, userType: collector.userType};
-
-           req.session.save((err) => {
-            if(err){
-                console.log("Error saving session",err);
-                return;
-            }
-            return res.redirect('/collectorDashboard');  
-         })
-       });
-     } else if(userType == 'admin'){ 
+        reject(err);
+        } else {
+           resolve(collector);
+        }
+      }) 
+    })} else if(userType == 'admin'){ 
        
+       userData = await new Promise((resolve,reject) => {
         conn.query('select * from admin where email = ?',[email],(err,result) => {
         if(err){
             console.log("Database error:",err);
-            return res.status(500).send("Database error");;
-        } else if(result.length === 0){
-            console.log("Admin not found");
-            return res.status(404).send("Admin not found");;
+            reject(err);
+        }else{
+            resolve(result[0]);
         }
-         const admin = result[0];
-         if(admin.password !== password){
-            console.log("Invalid password");
-            return  res.status(401).send("Invalid password");;
-         } else {
-         console.log("Admin found:",admin);
-         const {id,name,email,userType} = admin;
-         console.log("Admin details:",id,name,email,userType);
-         req.session.user = {id: id,name: name,email:email, userType: userType};   
-         req.session.save((err)=>{
-         if(err){
-            console.log("Error saving session",err);
-            return res.status(500).send("Database error");;
-         } 
-         console.log("Admin logged in successfully");
-         return res.redirect('/adminDashboard'); 
-        
-      })    
-       }  }); 
+       }) 
+    })} else {
+        return res.status(400).send("Invalid user type");
+    } if(!userData){
+        console.log("userData",userData);
+         return res.status(404).send(`${userType} not found`);
+    }  
+     if(password !== userData.password){
+        console.error("Invalid Email or password")
+     }
+    req.session.user = {id: userData.id, userType: userData.userType};
+        req.session.save((err) => {
+            if(err){
+                console.log("Error saving session",err);
+                 return res.status(500).send("Error saving session");
+            }
+       
+            if(userType == 'user'){
+                 return res.redirect('/userDashboard');
+            }
+            if(userType == 'collector'){
+                 return res.redirect('/collectorDashboard');
+            }
+            if(userType == 'admin'){
+                 return res.redirect('/adminDashboard');
+            }
+      });
+    }   catch(error){
+        console.error("Login error:", error);
+        return res.status(500).send("Internal server error");
     }
+    
 }   
 exports.signup = (req,resp,next) => {
     resp.render('Auth/signup');

@@ -35,8 +35,8 @@ class User {
         return;
     }else{
         console.log(result[0]);
-    callback(null,result[0]);
-    return;
+        callback(null,result[0]);
+        return;
     }
 })
    }
