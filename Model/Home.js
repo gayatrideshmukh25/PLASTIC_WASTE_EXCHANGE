@@ -1,10 +1,10 @@
 const conn = require('../Utils/database')
 class User {
 
-   constructor(name,email,password,userType,address,phone_no){
+   constructor(name,email,hash,userType,address,phone_no){
     this.name = name;
     this.email = email;
-    this.password = password;
+    this.hash = hash;
     this.userType = userType;
     this.address = address;
     this.phone_no = phone_no;
@@ -13,9 +13,9 @@ class User {
    save(){
      const user = `insert into users (name,email,password,userType,address,phone_no) values (?,?,?,?,?,?);`
 
-    conn.query(user,[this.name,this.email,this.password,this.userType,this.address,this.phone_no],(err,result) => {
+    conn.query(user,[this.name,this.email,this.hash,this.userType,this.address,this.phone_no],(err,result) => {
         if(err){
-            console.log('error while insertin',err);
+            console.log('error while inserting',err);
             return;
         }
         console.log("successfully",result);

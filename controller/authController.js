@@ -1,11 +1,11 @@
 const conn = require('../Utils/database');
-const crypto = require("crypto");
+const bcrypt = require("bcrypt");
 const User = require('../Model/Home');
 const Collector = require('../Model/Collector');
 const Waste = require('../Model/plastic');
 const { name } = require('ejs');
-const {validationResults,check} = require('express-validator');
-const { rejects } = require('assert');
+const {validationResult,check} = require('express-validator');
+
 
 exports.login = (req,resp,next) => {
     resp.render('Auth/login');
@@ -55,9 +55,11 @@ exports.postlogin =async (req,res,next) => {
         console.log("userData",userData);
          return res.status(404).send(`${userType} not found`);
     }  
-     if(password !== userData.password){
-        console.error("Invalid Email or password")
-     }
+    const match = bcrypt.compare(password,userData.password);
+    if (!match) {
+        res.status(400).send("Incorrect password or email");
+    }
+    
     req.session.user = {id: userData.id, userType: userData.userType};
         req.session.save((err) => {
             if(err){
@@ -82,22 +84,96 @@ exports.postlogin =async (req,res,next) => {
     
 }   
 exports.signup = (req,resp,next) => {
-    resp.render('Auth/signup');
+    resp.render('Auth/signup',{
+        errors : [],
+        oldInput : {}
+    });
 }
-exports.postsignup = (req,resp,next) => {
-    console.log(req.body);
-    const {fullname,email,password,userType,address,phone_no,city,state,pincode,availablity} = req.body;
-    if(userType === 'user'){
-        const newUser = new User(fullname,email,password,userType,address,phone_no);
+exports.postsignup =[
+    check('name')
+    .trim()
+    .isLength({min:3})
+    .withMessage('Name must be at least 3 charactor long'),
+
+    check('email')
+    .isEmail()
+    .withMessage('Please enter valid email address'),
+
+    check('password')
+    .isLength({ min: 6 })
+    .withMessage('Password must be at least 6 characters long')
+    .matches(/\d/)
+    .withMessage('Password must contain a number')
+    .matches(/[!@#$%^&*(),.?":{}|<>]/)
+    .withMessage('Password must contain a special character')
+    .matches(/[a-z]/)
+    .withMessage('Password must contain a lowercase letter')
+    .matches(/[A-Z]/)
+    .withMessage('Password must contain an uppercase letter'),
+     
+     check('confirmPassword')
+    .custom((value,{req}) => {
+        if(value !== req.body.password){
+            throw new Error('Password confirmation does not match password');
+        }
+        return true;
+    }),
+    check('userType')
+      .notEmpty().withMessage('User type is required')
+      .isIn(['user', 'collector', 'admin']).withMessage('Invalid user type'),
+
+    check('phone')
+      .optional()
+      .isMobilePhone().withMessage('Invalid phone number'),
+
+    check('city')
+    .if((value, { req }) => req.body.userType === 'collector')
+    .notEmpty()
+    .withMessage('City is required for collector'),
+
+  check('state')
+    .if((value, { req }) => req.body.userType === 'collector')
+    .notEmpty()
+    .withMessage('State is required for collector'),
+
+  check('pincode')
+    .if((value, { req }) => req.body.userType === 'collector')
+    .isPostalCode('IN')
+    .withMessage('Invalid pincode'),
+
+  check('availablity')
+    .if((value, { req }) => req.body.userType === 'collector')
+    .notEmpty()
+    .withMessage('Availability is required'),
+
+      async(req,resp,next) => {
+      const {name,email,password,confirmPassword,userType,address,phone_no,city,state,pincode,availablity} = req.body;
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const errors = validationResult(req);
+      if(!errors.isEmpty()){
+            console.log(errors.array());
+            return resp.status(422).render('Auth/signup',{
+            errors : errors.array(),
+            oldInput:{
+                name,email,password,confirmPassword,address,phone_no,userType,city,state,pincode,availablity
+
+            }
+            
+        });
+    }
+     
+      if(userType === 'user'){
+        const newUser = new User(name,email,hashedPassword,userType,address,phone_no);
         newUser.save();
         resp.redirect('/login');
-    } else if(userType === 'collector'){
-        const newCollector = new Collector(fullname,email,password,userType,address,phone_no,city,state,pincode,availablity);
+      } else if(userType === 'collector'){
+        const newCollector = new Collector(name,email,hashedPassword,userType,address,phone_no,city,state,pincode,availablity);
         newCollector.save();
         resp.redirect('/login');
-    } 
+     } 
     
-}
+}] 
+
 exports.logout = (req,resp,next) => {
     req.session.destroy((err) => {
         if(err){

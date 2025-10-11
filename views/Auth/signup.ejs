@@ -27,24 +27,34 @@
     </header>
     <div class="authcontainer">
         <h2>Signup</h2>
+        <% if (errors && errors.length > 0) { %>
+       <div class="bg-red-100 text-red-700 p-4 mb-4 rounded">
+       <p class="font-semibold">Error:</p>
+        <ul>
+        <% errors.forEach(error => { %>
+             <li><%= error.msg %></li>
+        <% }) %>
+       </ul>
+       </div>
+       <% } %>
         <form action="/postsignup" method="POST">
-            <input type="text" name="fullname" placeholder="Full Name" required>
-            <input type="email" name="email" placeholder="Email" required>
+            <input type="text" name="name" value="<%= oldInput.name %>" placeholder=" Name" required>
+            <input type="email" name="email" value="<%= oldInput.email %>" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
             <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
 
             <label for="address">Address</label>
-            <textarea id="address" name="address" placeholder="Enter Your Location to exchange" required></textarea>
-            <input type="tel" name="phone_no" placeholder="Phone Number" required>
+            <textarea id="address" name="address" value="<%= oldInput.address %>" placeholder="Enter Your Location to exchange" required></textarea>
+            <input type="tel" name="phone_no" value="<%= oldInput.phone_no %>" placeholder="Phone Number" required>
              <select name="userType" id="userType" required>
                 <option value="" disabled selected>Select User Type</option>
                 <option value="user">User</option>
                 <option value="collector">Collector</option>
             </select>
             <div id="collectorFields" style="display: none;">
-            <input type="text" name="city" placeholder="City">
-            <input type="text" name="state" placeholder="State">
-            <input type="text" name="pincode" placeholder="Pincode">
+            <input type="text" name="city" value="<%= oldInput.city %>" placeholder="City">
+            <input type="text" name="state" value="<%= oldInput.state %>" placeholder="State">
+            <input type="text" name="pincode" value="<%= oldInput.pincode %>" placeholder="Pincode">
             <select name="availablity" required>
                 <option value="available">Available</option>
                 <option value="Unavailable">UnAvailable</option>
