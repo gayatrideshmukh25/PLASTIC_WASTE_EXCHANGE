@@ -8,57 +8,86 @@ const {validationResult,check} = require('express-validator');
 
 
 exports.login = (req,resp,next) => {
-    resp.render('Auth/login');
+    resp.render('Auth/login',{errors: [],
+        errorMessage: "",
+        oldInput:'' });
 }
-exports.postlogin =async (req,res,next) => {
-    const {email,password,userType} = req.body;
-    
-    if(!email || !password || !userType){
-        return res.status(400).send("All fields are required");
+exports.postlogin = [
+    check("email").isEmail().withMessage("Enter a valid email"),
+    check("password").notEmpty().withMessage("Password is required"),
+  
+  async (req,res,next) => {
+      const errorsResult = validationResult(req);
+    if (!errorsResult.isEmpty()) {
+      return res.render("Auth/login", {
+        errors: errorsResult.array(),
+        errorMessage: "",
+        oldInput: { email: req.body.email },
+      });
     }
+
+    const { email, password, userType } = req.body;
+
+    if (!email || !password || !userType) {
+      return res.render("Auth/login", {
+        errors: [],
+        errorMessage: "All fields are required",
+        oldInput: { email },
+      });
+    }
+
     try {
-    let userData;
-    if( userType == 'user'){
-     userData = await new Promise ((resolve,reject) => {
-         User.getUser(email,(err,user) => {
-        if (err) {
-            console.error("database error : ",err);
-            reject(err);
-        } else {
+      let userData;
+
+      //  Fetch user by type
+      if (userType === "user") {
+        userData = await new Promise((resolve, reject) => {
+          User.getUser(email, (err, user) => {
+            if (err) return reject(err);
             resolve(user);
-        }
-     })
-    })} else if(userType == 'collector'){
-      userData = await new Promise((resolve,reject) => {
-        Collector.getCollector(email,(err,collector) => {
-        if (err) {
-        console.error("Database error:", err);
-        reject(err);
-        } else {
-           resolve(collector);
-        }
-      }) 
-    })} else if(userType == 'admin'){ 
-       
-       userData = await new Promise((resolve,reject) => {
-        conn.query('select * from admin where email = ?',[email],(err,result) => {
-        if(err){
-            console.log("Database error:",err);
-            reject(err);
-        }else{
+          });
+        });
+        console.log("found user : ",userData)
+      } else if (userType === "collector") {
+        userData = await new Promise((resolve, reject) => {
+          Collector.getCollector(email, (err, collector) => {
+            if (err) return reject(err);
+            resolve(collector);
+          });
+        });
+      } else if (userType === "admin") {
+        userData = await new Promise((resolve, reject) => {
+          conn.query("SELECT * FROM admin WHERE email = ?", [email], (err, result) => {
+            if (err) return reject(err);
             resolve(result[0]);
-        }
-       }) 
-    })} else {
-        return res.status(400).send("Invalid user type");
-    } if(!userData){
-        console.log("userData",userData);
-         return res.status(404).send(`${userType} not found`);
-    }  
-    const match = bcrypt.compare(password,userData.password);
+          });
+        });
+      } else {
+        return res.render("Auth/login", {
+          errors: [],
+          errorMessage: "Invalid user type",
+          oldInput: { email },
+        });
+      }
+
+      //  If user not found
+      if (!userData) {
+        return res.render("Auth/login", {
+          errors: [],
+          errorMessage: "Email or password incorrect",
+          oldInput: { email },
+        });
+      }
+
+    const match =  await bcrypt.compare(password,userData.password);
     if (!match) {
-        res.status(400).send("Incorrect password or email");
-    }
+        // Password mismatch
+        return res.render("Auth/login", {
+          errors: [],
+          errorMessage: "Email or password incorrect",
+          oldInput: { email },
+        });
+      }
     
     req.session.user = {id: userData.id, userType: userData.userType};
         req.session.save((err) => {
@@ -82,14 +111,14 @@ exports.postlogin =async (req,res,next) => {
         return res.status(500).send("Internal server error");
     }
     
-}   
+}]
 exports.signup = (req,resp,next) => {
     resp.render('Auth/signup',{
         errors : [],
         oldInput : {}
     });
 }
-exports.postsignup =[
+exports.postsignup = [
     check('name')
     .trim()
     .isLength({min:3})
@@ -146,33 +175,76 @@ exports.postsignup =[
     .notEmpty()
     .withMessage('Availability is required'),
 
-      async(req,resp,next) => {
-      const {name,email,password,confirmPassword,userType,address,phone_no,city,state,pincode,availablity} = req.body;
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const errors = validationResult(req);
-      if(!errors.isEmpty()){
-            console.log(errors.array());
-            return resp.status(422).render('Auth/signup',{
-            errors : errors.array(),
-            oldInput:{
-                name,email,password,confirmPassword,address,phone_no,userType,city,state,pincode,availablity
+      async (req, res, next) => {
+    const {
+      name,
+      email,
+      password,
+      confirmPassword,
+      userType,
+      address,
+      phone_no,
+      city,
+      state,
+      pincode,
+      availablity,
+    } = req.body;
 
-            }
-            
-        });
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const mappedErrors = errors.mapped();
+       
+
+      console.log("Validation errors:", mappedErrors);
+
+      return res.status(422).render("Auth/signup", {
+        errors: mappedErrors,
+        oldInput: {
+          name,
+          email,
+          password,
+          confirmPassword,
+          address,
+          phone_no,
+          userType,
+          city,
+          state,
+          pincode,
+          availablity,
+        },
+      });
     }
-     
-      if(userType === 'user'){
-        const newUser = new User(name,email,hashedPassword,userType,address,phone_no);
-        newUser.save();
-        resp.redirect('/login');
-      } else if(userType === 'collector'){
-        const newCollector = new Collector(name,email,hashedPassword,userType,address,phone_no,city,state,pincode,availablity);
-        newCollector.save();
-        resp.redirect('/login');
-     } 
-    
-}] 
+
+    try {
+      // ✅ hash after validation (better performance)
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      if (userType === "user") {
+        const newUser = new User(name, email, hashedPassword, userType, address, phone_no);
+        await newUser.save();
+      } else if (userType === "collector") {
+        const newCollector = new Collector(
+          name,
+          email,
+          hashedPassword,
+          userType,
+          address,
+          phone_no,
+          city,
+          state,
+          pincode,
+          availablity
+        );
+        await newCollector.save();
+      }
+
+      // ✅ Always redirect after async operations complete
+      return res.redirect("/login");
+    } catch (err) {
+      console.error("Signup Error:", err);
+      return res.status(500).send("Internal Server Error");
+    }
+  },] ;
 
 exports.logout = (req,resp,next) => {
     req.session.destroy((err) => {

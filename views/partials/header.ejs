@@ -20,14 +20,14 @@
                 <i class="fa-solid fa-user-circle" style="font-size:1.8rem; color:#7b2ff2; vertical-align:middle;"></i>
             </span>
             <% }else if (user.userType === 'collector'){ %>
-            <a href="/userDashboard">collectorDashboard</a>
+            <a href="/collectorDashboard">collectorDashboard</a>
             <a href="/collector/tasks">My Tasks</a>
             <a href="/collector/completed">Completed Collections</a>
              <span id="profile-shortcut"  title="Quick Profile">
                 <i class="fa-solid fa-user-circle" style="font-size:1.8rem; color:#7b2ff2; vertical-align:middle;"></i>
             </span>
             <% } else if (user.userType === 'admin'){ %>
-            <a href="/userDashboard">adminDashboard</a>
+            <a href="/adminDashboard">adminDashboard</a>
             <a href="/admin/users">Users</a>
             <a href="/admin/collectors">Collectors</a>
             <a href="/admin/reports">Reports</a>

@@ -1,9 +1,9 @@
-const  getSession  = require('../Utils/session');
+
 const Waste = require('../Model/plastic');
 const User = require('../Model/Home');
 const Collector = require('../Model/Collector');
 const conn  = require('../Utils/database');
-const session = require('express-session');
+
 
 exports.home = (req,resp,next) => {
     resp.render('host/home');
@@ -28,7 +28,7 @@ exports.userDashboard = (req,resp,next) => {
 
 exports.collectorDashboard = (req,resp,next) => {
     const collector = req.session.user;
-    const id = req.session.collector.id;
+    const {id} = collector;
     Collector.getCollectorbyId(id,(err,collector) => {
         if(collector.userType !== 'collector'){
             console.log("unauthorized access");
@@ -66,5 +66,8 @@ exports.profile = (req,resp,next) => {
 }
 exports.sendRequest = (req,resp,next) => {
     const user = req.session.user;
+    const {id} = user;
+    User.getUserbyId(id,(err,user) => {
     resp.render('host/sendWaste',{user : user});
+    });
 }

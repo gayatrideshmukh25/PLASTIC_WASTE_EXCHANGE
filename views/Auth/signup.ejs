@@ -27,38 +27,74 @@
     </header>
     <div class="authcontainer">
         <h2>Signup</h2>
-        <% if (errors && errors.length > 0) { %>
-       <div class="bg-red-100 text-red-700 p-4 mb-4 rounded">
-       <p class="font-semibold">Error:</p>
-        <ul>
-        <% errors.forEach(error => { %>
-             <li><%= error.msg %></li>
-        <% }) %>
-       </ul>
-       </div>
-       <% } %>
+      <!-- <% if (errors && errors.length > 0) { %>
+         <div class="bg-red-100 text-red-700 p-4 mb-4 rounded">
+           <p class="font-semibold">Error:</p> 
+           <ul> 
+            <% errors.forEach(error => { %> 
+              <li><%= error.msg %></li> 
+              <% }) %>
+             </ul> 
+            </div>
+             <% } %> -->
         <form action="/postsignup" method="POST">
-            <input type="text" name="name" value="<%= oldInput.name %>" placeholder=" Name" required>
-            <input type="email" name="email" value="<%= oldInput.email %>" placeholder="Email" required>
+            <input type="text" name="name" value="<%= oldInput ? oldInput.name : '' %>" placeholder=" Name" required>
+            <div>
+       <% if (errors.name) { %>
+      <div class="error"><%= errors.name.msg %></div>
+    <% } %>
+
+          </div>
+            <input type="email" name="email" value="<%= oldInput ? oldInput.email : '' %>" placeholder="Email" required>
+            <% if (errors.email) { %>
+               <div class="error"><%= errors.email.msg %></div>
+            <% } %>
+
             <input type="password" name="password" placeholder="Password" required>
+            <% if (errors.password) { %>
+               <div class="error"><%= errors.password.msg %></div>
+           <% } %>
+
             <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
 
             <label for="address">Address</label>
-            <textarea id="address" name="address" value="<%= oldInput.address %>" placeholder="Enter Your Location to exchange" required></textarea>
-            <input type="tel" name="phone_no" value="<%= oldInput.phone_no %>" placeholder="Phone Number" required>
+            <% if (errors.confirmPassword) { %>
+               <div class="error"><%= errors.confirmPassword.msg %></div>
+            <% } %>
+
+            <textarea id="address" name="address" value="<%= oldInput ? oldInput.address : '' %>" placeholder="Enter Your Location to exchange" required></textarea>
+            <input type="tel" name="phone_no" value="<%= oldInput ? oldInput.phone_no : '' %>" placeholder="Phone Number" required>
+           <% if (errors.phone_no) { %>
+               <div class="error"><%= errors.phone_no.msg %></div>
+           <% } %>
              <select name="userType" id="userType" required>
                 <option value="" disabled selected>Select User Type</option>
                 <option value="user">User</option>
                 <option value="collector">Collector</option>
             </select>
+            <% if (errors.userType) { %>
+               <div class="error"><%= errors.userType.msg %></div>
+           <% } %>
             <div id="collectorFields" style="display: none;">
-            <input type="text" name="city" value="<%= oldInput.city %>" placeholder="City">
-            <input type="text" name="state" value="<%= oldInput.state %>" placeholder="State">
-            <input type="text" name="pincode" value="<%= oldInput.pincode %>" placeholder="Pincode">
+            <input type="text" name="city" value="<%= oldInput ? oldInput.city : '' %>" placeholder="City">
+            <% if (errors.city) { %>
+               <div class="error"><%= errors.city.msg %></div>
+           <% } %>
+            <input type="text" name="state" value="<%= oldInput ? oldInput.state : '' %>" placeholder="State">
+            <% if (errors.state) { %>
+               <div class="error"><%= errors.state.msg %></div>
+           <% } %>
+            <input type="text" name="pincode" value="<%= oldInput ? oldInput.pincode : '' %>" placeholder="Pincode">
+            <% if (errors.pincode) { %>
+               <div class="error"><%= errors.pincode.msg %></div>
+           <% } %>
             <select name="availablity" required>
                 <option value="available">Available</option>
                 <option value="Unavailable">UnAvailable</option>
             </select>
+            <% if (errors.availablity) { %>
+               <div class="error"><%= errors.availablity.msg %></div>
+           <% } %>
             </div>
             <button type="submit" class="submit-btn">Signup</button>
         </form>

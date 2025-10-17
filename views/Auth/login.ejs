@@ -35,6 +35,9 @@
                 <option value="collector">Collector</option>
                 <option value="admin">admin</option>
             </select>   
+            <% if (errorMessage) { %>
+             <div class="error"><%= errorMessage %></div>
+            <% } %>
             <button type="submit" class="submit-btn">Login</button>
         </form>
         <div class="form-footer">
