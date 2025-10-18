@@ -1,7 +1,7 @@
 const conn = require('../Utils/database')
 class Collector {
 
-   constructor(name,email,password,userType,address,phone_no,city,state,pincode,availability){
+   constructor(name,email,password,userType,address,phone_no,city,state,pincode,latitude, longitude,availability){
     this.name = name;
     this.email = email;
     this.password = password;
@@ -11,15 +11,17 @@ class Collector {
     this.city = city;
     this.state = state;
     this.pincode = pincode;
+    this.latitude = latitude;
+    this.longitude = longitude;
     this.availability = availability;
    }
 
    save(){
-     const collector = `insert into collector (name,email,password,userType,address,phone_no,city,state,pincode,availability) values (?,?,?,?,?,?,?,?,?,?);`
+     const collector = `insert into collector (name,email,password,userType,address,phone_no,city,state,pincode,latitude, longitude,availability) values (?,?,?,?,?,?,?,?,?,?,?,?);`
 
-    conn.query(collector,[this.name,this.email,this.password,this.userType,this.address,this.phone_no,this.city,this.state,this.pincode,this.availability],(err,result) => {
+    conn.query(collector,[this.name,this.email,this.password,this.userType,this.address,this.phone_no,this.city,this.state,this.pincode,this.latitude || null,this.longitude || null,this.availability],(err,result) => {
         if(err){
-            console.log('error while insertin',err);
+            console.log('error while inserting',err);
             return;
         }
         console.log("successfully",result);

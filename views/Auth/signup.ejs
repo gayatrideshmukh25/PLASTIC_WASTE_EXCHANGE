@@ -96,6 +96,8 @@
                <div class="error"><%= errors.availablity.msg %></div>
            <% } %>
             </div>
+              <input type="hidden" name="latitude" id="latitude">
+              <input type="hidden" name="longitude" id="longitude">
             <button type="submit" class="submit-btn">Signup</button>
         </form>
          <div class="form-footer">
@@ -104,6 +106,13 @@
     </div>
     <%- include ('../partials/footer.ejs') %>
     <script>
+      
+ if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      document.getElementById("latitude").value = pos.coords.latitude;
+      document.getElementById("longitude").value = pos.coords.longitude;
+    });
+  }
   const userTypeSelect = document.getElementById('userType');
   const collectorFields = document.getElementById('collectorFields');
 

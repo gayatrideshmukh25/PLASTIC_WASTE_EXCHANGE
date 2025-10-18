@@ -187,6 +187,8 @@ exports.postsignup = [
       city,
       state,
       pincode,
+      latitude,
+       longitude,
       availablity,
     } = req.body;
 
@@ -233,6 +235,8 @@ exports.postsignup = [
           city,
           state,
           pincode,
+          latitude, 
+          longitude,
           availablity
         );
         await newCollector.save();
