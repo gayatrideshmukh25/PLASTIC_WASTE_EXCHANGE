@@ -3,6 +3,7 @@ const Waste = require('../Model/plastic');
 const User = require('../Model/Home');
 const Collector = require('../Model/Collector');
 const conn  = require('../Utils/database');
+const { request } = require('express');
 
 
 exports.home = (req,resp,next) => {
@@ -49,17 +50,17 @@ exports.adminDashboard =(req,resp,next) => {
     resp.render('host/adminDashboard',{user : admin});
 };
 
-exports.logwaste = (req,resp,next) => {
-    const id = req.session.user.id;
-    resp.render('host/logwaste',{id : id});
-}
+// exports.logwaste = (req,resp,next) => {
+//     const id = req.session.user.id;
+//     resp.render('host/logwaste',{id : id});
+// }
 
-exports.postrequest = (req,resp,next) => {
-    const {id,wasteType,quantity} = req.body;
-    const waste = new Waste(id,wasteType,quantity);
-    waste.save();
-    resp.redirect('/userDashboard');
-     }
+// exports.postrequest = (req,resp,next) => {
+//     const {id,wasteType,quantity} = req.body;
+//     const waste = new Waste(id,wasteType,quantity);
+//     waste.save();
+//     resp.redirect('/userDashboard');
+//      }
 
 exports.profile = (req,resp,next) => {
     console.log("Profile");
@@ -71,6 +72,35 @@ exports.sendRequest = (req,resp,next) => {
     resp.render('host/sendWaste',{user : user});
     });
 }
+exports.postRequest = (req, res) => {
+   const user_id = req.session.user?.id;  // use optional chaining for safety
+
+  if (!user_id) {
+    return res.status(401).send("User not logged in");
+  }
+  const {
+     collector_id, waste_type, quantity,
+    pickup_address, pickup_lat, pickup_lng,
+    preferred_date, preferred_time, notes
+  } = req.body;
+  // console.log(req.body);
+  const wasteRequest = new Waste(
+    user_id,
+    collector_id,
+    waste_type,
+    quantity,
+    pickup_address,
+    pickup_lat,
+    pickup_lng,
+    preferred_date,
+    preferred_time,
+    notes
+  );
+ 
+  wasteRequest.save();
+  res.render("host/postRequest", { message: "Waste Pickup Request Sent!" });
+};
+
 function getDistance(lat1, lon1, lat2, lon2) {
   const R = 6371; // km
   const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -110,6 +140,7 @@ exports.nearestCollector = (req, res) => {
 
     if (nearest) {
       res.json({
+        id : nearest.id,
         name: nearest.name,
         phone: nearest.phone_no,
         address: nearest.address,

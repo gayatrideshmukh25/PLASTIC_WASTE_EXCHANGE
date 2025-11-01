@@ -11,7 +11,6 @@ const authRouter = require('./Routes/authRouter');
 const hostRouter = require('./Routes/hostRouter');
 
 
-app.use(express.json());
 app.set('view engine','ejs')
 app.use(express.static(path.join(__dirname,'public')));
 app.set('views',path.join(__dirname,'views'));

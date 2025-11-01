@@ -3,14 +3,15 @@ const bcrypt = require("bcrypt");
 const User = require('../Model/Home');
 const Collector = require('../Model/Collector');
 const Waste = require('../Model/plastic');
-const { name } = require('ejs');
 const {validationResult,check} = require('express-validator');
 
 
 exports.login = (req,resp,next) => {
-    resp.render('Auth/login',{errors: [],
+    resp.render('Auth/login',{
+      errors: [],
         errorMessage: "",
-        oldInput:'' });
+        oldInput:'' 
+      });
 }
 exports.postlogin = [
     check("email").isEmail().withMessage("Enter a valid email"),

@@ -8,22 +8,12 @@
       <div id="nearestCollector"></div>
     </div>
     <hr>
-      <form id="wasteForm" method="post" action="/sendRequetst">
-        <div>
-          <label for="name">Full Name</label>
-          <input type="text" id="name" name="name" placeholder="Enter your name" required>
-        </div>
-        <div>
-          <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" name="phone" placeholder="e.g. +91-9876543210" required>
-        </div>
-        <div>
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" placeholder="you@example.com">
-        </div>
-        <div>
+      <form id="wasteForm" method="post" action="/postRequest">
+         <input type="hidden" id="collectorId" name="collector_id">
+         <input type="hidden" id="userId" name="user_id" value="<%= user.id %>">
+          <div>
           <label for="wasteType">Waste Type</label>
-          <select id="wasteType" name="wasteType" required>
+          <select id="wasteType" name="waste_type" required>
             <option value="">Select Waste Type</option>
             <option value="dry">Dry / Recyclable</option>
             <option value="wet">Wet / Organic</option>
@@ -38,15 +28,15 @@
         </div>
         <div class="full">
           <label for="address">Pickup Address</label>
-          <textarea id="address" name="address" placeholder="Enter pickup location" required></textarea>
+          <textarea id="address" name="pickup_address" placeholder="Enter pickup location" required></textarea>
         </div>
         <div>
           <label for="date">Preferred Date</label>
-          <input type="date" id="date" name="date">
+          <input type="date" id="date" name="preferred_date">
         </div>
         <div>
           <label for="time">Preferred Time</label>
-          <input type="time" id="time" name="time">
+          <input type="time" id="time" name="preferred_time">
         </div>
         <div class="full">
           <label for="notes">Additional Notes</label>
@@ -88,6 +78,7 @@
                 <p><strong>Address:</strong> ${data.address}</p>
                 <p><strong>Distance:</strong> ${data.distance} km</p>
               `;
+              document.getElementById("collectorId").value = data.id;
             } else {
               nearestDiv.textContent = data.message || "No nearby collectors found.";
             }
@@ -97,7 +88,8 @@
           });
       }
 
-      function error() {
+      function error(err) {
+        console.log(err);
         locationStatus.textContent = "Unable to retrieve your location.";
       }
     });
