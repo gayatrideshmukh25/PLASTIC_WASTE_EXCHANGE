@@ -9,6 +9,8 @@ const store = new MYSQLStore({},conn);
 const storeRouter = require('./Routes/storeRouter');
 const authRouter = require('./Routes/authRouter');
 const hostRouter = require('./Routes/hostRouter');
+require('dotenv').config();
+
 
 
 app.set('view engine','ejs')
@@ -34,7 +36,7 @@ app.use((req,resp,next) => {
     resp.status(404).render('404');
 });
 
-const port = 3000;
+const port = 3000||process.env.PORT ;
 app.listen(port,()=>{
  console.log(`http://localhost:${port}`)
 })

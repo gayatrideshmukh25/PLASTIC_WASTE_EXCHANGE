@@ -51,23 +51,57 @@ class Waste {
       console.log("✅ Waste request inserted successfully!");
     });
   }
-  static getAllWaste(id,callback) {
-       const wasteLoggedQuery = `select * from waste 
-                                  where id = ? ;`
-            conn.query(wasteLoggedQuery,[id],(err,result) => {
-              if(err){
-                console.log("error fetching waste logged",err);
-                callback(null)
-                }
-              else if(result.length === 0){
-                console.log("no waste logged");
-                callback(null)
-                }   
-               else {
-                   const wasteLogged = result[0];
-                   callback(wasteLogged);
-                } 
-     })
+  static getAllWaste(collectorId,callback) {
+       const query = `
+    SELECT waste_requests.*, users.name AS user_name ,users.email AS user_email ,users.address AS user_address
+    FROM waste_requests
+    JOIN users ON waste_requests.user_id = users.id
+    WHERE waste_requests.collector_id = ?;
+      `;
+
+      conn.query(query, [collectorId], (err, results) => {
+          if (err) return callback(err);
+                 callback(null, results);
+            });
+           };
+
+
+      static getRequestbyUser(userId, callback)  {
+           const query = `
+            SELECT waste_requests.*, collector.name AS collector_name
+            FROM waste_requests
+            LEFT JOIN collector ON waste_requests.collector_id = collector.id
+            WHERE waste_requests.user_id = ?;
+            `;
+        conn.query(query, [userId], (err, results) => {
+          if (err) return callback(err);
+            callback(null, results);
+       });
+      };
+
+      static  updateStatus(id, status, callback) {
+        const sql = "UPDATE waste_requests SET status = ? WHERE request_id = ?";
+          conn.query(sql, [status, id], (err, result) => {
+          if (err) return callback(err);
+          callback(null, result);
+        });
+      }
+      //  const wasteLoggedQuery = `select * from waste_requests
+      //                             where collector_id = ? ;`
+      //       conn.query(wasteLoggedQuery,[id],(err,result) => {
+      //         if(err){
+      //           console.log("error fetching waste logged",err);
+      //           callback(null)
+      //           }
+      //         else if(result.length === 0){
+      //           console.log("no waste logged");
+      //           callback(null)
+      //           }   
+      //          else {
+      //             //  const wasteLogged = result[0];
+      //              callback(result);
+      //           } 
+      //       })
 }
-}
+
 module.exports = Waste;

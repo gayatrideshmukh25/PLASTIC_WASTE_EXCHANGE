@@ -1,7 +1,7 @@
 const express = require('express');
 const hostRouter = express.Router();
 
-const { postrequest,home,userDashboard,collectorDashboard,adminDashboard,sendRequest,nearestCollector,postRequest } = require('../controller/hostController');
+const { postrequest,home,userDashboard,collectorDashboard,adminDashboard,sendRequest,nearestCollector,postRequest,acceptRequest,rejectRequest,completeRequest } = require('../controller/hostController');
 function isAuthenticated(req, res, next) {
     if (req.session && req.session.user) {
         return next();
@@ -18,6 +18,9 @@ hostRouter.get('/adminDashboard',isAuthenticated,adminDashboard);
 hostRouter.get('/sendRequest',isAuthenticated,sendRequest);
 hostRouter.get('/nearestCollector',isAuthenticated,nearestCollector);
 hostRouter.post('/postRequest',isAuthenticated,postRequest);
+hostRouter.get('/collectorDashboard/accept/:request_id', isAuthenticated,acceptRequest);
+hostRouter.get('/collectorDashboard/reject/:request_id', isAuthenticated,rejectRequest);
+hostRouter.get('/collectorDashboard/complete/:request_id',isAuthenticated, completeRequest);
 
    
 

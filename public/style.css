@@ -255,10 +255,11 @@ body {
             box-shadow: 0 8px 32px rgba(161,140,209,0.10);
             padding: 2.5rem 2rem;
             min-width: 350px;
-            max-width: 500px;
-            width: 100%;
+            max-width: 90%;
+            /* width: 100%; */
             text-align: center;
             margin: 0 auto;
+            overflow-x: auto;
         }
         .card h2 {
             color: #7b2ff2;
@@ -300,7 +301,7 @@ body {
         strong {
             color: #7b2ff2;
         }
-        @media (max-width: 900px) {
+        /* @media (max-width: 1000px) {
             header h1 {
                 font-size: 1.2rem;
             }
@@ -317,8 +318,8 @@ body {
             .card {
                 padding: 1.2rem 0.5rem;
                 min-width: unset;
-            }
-        }
+            } */
+        /* } */
 
  
 .profile-shortcut {
@@ -390,6 +391,135 @@ body {
     from { opacity: 0; transform: translateY(-30px);}
     to { opacity: 1; transform: translateY(0);}
 }
+
+
+
+
+/* table base */
+.card table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+    min-width: 720px;              /* keeps layout stable on desktop */
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(123,47,242,0.03);
+}
+
+/* sticky header */
+.card table  th {
+    background: #7b2ff2;
+    color: #fff;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 700;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 3;
+}
+
+/* body cells */
+.card table  td {
+    padding: 0.65rem 1rem;
+    color: #5e548e;
+    border-bottom: 1px solid rgba(123,47,242,0.06);
+    background: #fff;
+    vertical-align: middle;
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:unset; /* keeps rows compact; long text shows ellipsis */
+}
+
+/* zebra rows & hover */
+.card table  tr:nth-child(odd) td {
+    background: #fbf6ff;
+}
+.card table  tr:hover td {
+    background: #f3e8ff;
+    transition: background .15s ease;
+}
+
+/* rounded corners */
+.card table  th:first-child { border-top-left-radius: 12px; }
+.card table  th:last-child  { border-top-right-radius: 12px; }
+.card table tr:last-child td:first-child { border-bottom-left-radius: 12px; }
+.card table  tr:last-child td:last-child  { border-bottom-right-radius: 12px; }
+
+/* small helper spacing & wrapping for specific columns */
+.card table th, .card table td { vertical-align: middle; }
+
+/* allow specific columns to wrap instead of truncating */
+.card table td.wrap {
+    white-space: normal;
+    word-break: break-word;
+}
+
+/* actions column (buttons/links) */
+.table-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.table-actions .action-btn {
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: transform .08s ease, box-shadow .12s ease;
+}
+.table-actions .edit {
+    background: #7b2ff2;
+    color: #fff;
+}
+.table-actions .delete {
+    background: #ffe6e6;
+    color: #9b2c2c;
+    border: 1px solid rgba(155,44,44,0.08);
+}
+.table-actions .view {
+    background: #fff;
+    color: #7b2ff2;
+    border: 1px solid rgba(123,47,242,0.12);
+}
+.table-actions .action-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
+
+/* status badges */
+.status {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    vertical-align: middle;
+}
+.status.pending   { background: #fff4e6; color: #b45309; border: 1px solid #ffe8b2; }
+.status.assigned  { background: #e8fff3; color: #065f46; border: 1px solid #c6f6e8; }
+.status.completed { background: #e8f0ff; color: #1e40af; border: 1px solid #cfe0ff; }
+
+/* responsive tweaks */
+@media (max-width: 900px) {
+    .card table { min-width: 600px; font-size: 0.94rem; }
+}
+@media (max-width: 700px) {
+    .card table { min-width: 520px; font-size: 0.92rem; }
+    .card table thead th { padding: 0.6rem 0.75rem; }
+    .card table tbody td { padding: 0.55rem 0.75rem; }
+}
+@media (max-width: 480px) {
+    .card table { min-width: 440px; font-size: 0.9rem; }
+    /* Make important columns wrap instead of truncating on very small screens */
+    .card table td.wrap-small { white-space: normal; }
+}
+/* =========================
+   END DASHBOARD TABLE
+   ========================= */
 footer {
     background: #fff;
     color: #7b2ff2;
@@ -399,7 +529,7 @@ footer {
     letter-spacing: 0.5px;
     border-top: 1px solid #e0d7f7;
     box-shadow: 0 -2px 12px rgba(161,140,209,0.06);
-    margin-top: 8rem;
+    margin-top: 10rem;
 }
 
 footer a {

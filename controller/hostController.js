@@ -14,28 +14,38 @@ exports.userDashboard = (req,resp,next) => {
       const  user = req.session.user;
       const {id} = user;
       User.getUserbyId(id,(err,user) => {
-      Waste.getAllWaste(id,(wasteLogged) => {
-      req.session.waste = wasteLogged;
-      req.session.save((err) => {
-        if(err){
-            console.log("Error saving session",err);
-            return;
-        }
-        });
+        if(user.userType !== 'user'){
+            console.log("unauthorized access");
+            return resp.redirect('/login');
+        };
+      Waste.getRequestbyUser(id,(err,wasteLogged) => {
+      if(err){
+        console.log(err);
+         return resp.status(500).send("Database error");
+      }
+      
+        
          resp.render('host/userDashboard',{user : user,wasteLogged : wasteLogged})
       });
     });
 }
 
-exports.collectorDashboard = (req,resp,next) => {
+exports.collectorDashboard = (req,res,next) => {
     const collector = req.session.user;
-    const {id} = collector;
+    const {id} =collector;
     Collector.getCollectorbyId(id,(err,collector) => {
         if(collector.userType !== 'collector'){
             console.log("unauthorized access");
-            return resp.redirect('/login');
-        }
-    resp.render('host/collectorDashboard',{user : collector});
+            return res.redirect('/login');
+        };
+    Waste.getAllWaste(id,(err,wasteLogged) => {
+      console.log("Waste logged for collector:", wasteLogged);
+     if(err){
+       console.log(err);
+      return res.status(500).send("Database error");
+     }
+    res.render('host/collectorDashboard',{user : collector, wasteLogged : wasteLogged,User : User});
+});
     });
 }
 
@@ -49,19 +59,34 @@ exports.adminDashboard =(req,resp,next) => {
         }
     resp.render('host/adminDashboard',{user : admin});
 };
-
-// exports.logwaste = (req,resp,next) => {
-//     const id = req.session.user.id;
-//     resp.render('host/logwaste',{id : id});
-// }
-
-// exports.postrequest = (req,resp,next) => {
-//     const {id,wasteType,quantity} = req.body;
-//     const waste = new Waste(id,wasteType,quantity);
-//     waste.save();
-//     resp.redirect('/userDashboard');
-//      }
-
+exports.completeRequest = (req,res) => {
+    const id = req.params.request_id;
+    console.log("Completing request ID:", id);
+    Waste.updateStatus(id, 'completed', (err, result) => {
+      if (err) {
+        console.log("Error updating status:", err);
+        return res.status(500).send("Database error");
+      }
+      res.redirect('/collectorDashboard');
+    });
+}
+exports.acceptRequest = (req,res) => {
+    const id = req.params.request_id;
+    Waste.updateStatus(id, 'accepted', (err, result) => {
+     if (err) {
+        console.log("Error updating status:", err);
+        return res.status(500).send("Database error");
+      }
+      res.redirect('/collectorDashboard');
+    });
+}
+exports.rejectRequest = (req, res) => {
+  const id = req.params.request_id;
+  Waste.updateStatus(id, 'rejected', (err) => {
+    if (err) console.error(err);
+    res.redirect('/collectorDashboard');
+  });
+};
 exports.profile = (req,resp,next) => {
     console.log("Profile");
 }

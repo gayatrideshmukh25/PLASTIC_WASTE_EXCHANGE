@@ -8,158 +8,7 @@
     <link href="/style.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
-    <!-- <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
-            min-height: 100vh;
-        }
-        header {
-            background: #fff;
-            box-shadow: 0 2px 8px rgba(161,140,209,0.08);
-            padding: 1.5rem 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-        header h1 {
-            display: flex;
-            align-items: center;
-            font-size: 2rem;
-            font-weight: 700;
-            color: #7b2ff2;
-            margin-left: 2rem;
-            letter-spacing: 1px;
-        }
-        header img {
-            margin-right: 1rem;
-        }
-        nav {
-            margin-right: 2rem;
-        }
-        nav a {
-            color: #5e548e;
-            text-decoration: none;
-            margin: 0 1.2rem;
-            font-weight: 500;
-            transition: color 0.2s;
-            position: relative;
-        }
-        nav a::after {
-            content: '';
-            display: block;
-            width: 0;
-            height: 2px;
-            background: #7b2ff2;
-            transition: width .3s;
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-        }
-        nav a:hover {
-            color: #7b2ff2;
-        }
-        nav a:hover::after {
-            width: 100%;
-        }
-        .login-btn {
-            background: #7b2ff2;
-            color: #fff !important;
-            padding: 0.5rem 1.2rem;
-            border-radius: 25px;
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(123,47,242,0.08);
-            transition: background 0.2s, box-shadow 0.2s;
-        }
-        .login-btn:hover {
-            background: #5f1bbf;
-            box-shadow: 0 4px 16px rgba(123,47,242,0.16);
-        }
-        .Hcontainer {
-            max-width: 1100px;
-            margin: 3rem auto 2rem auto;
-            padding: 0 1rem;
-        }
-        .dashboard-grid {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-        .card {
-            background: #fff;
-            border-radius: 24px;
-            box-shadow: 0 8px 32px rgba(161,140,209,0.10);
-            padding: 2.5rem 2rem;
-            min-width: 350px;
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-            margin: 0 auto;
-        }
-        .card h2 {
-            color: #7b2ff2;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }
-        .card ul {
-            list-style: none;
-            padding: 0;
-            margin-bottom: 1.5rem;
-        }
-        .card li {
-            background: #f3e8ff;
-            color: #5e548e;
-            border-radius: 12px;
-            margin-bottom: 0.7rem;
-            padding: 0.7rem 1rem;
-            font-weight: 500;
-            box-shadow: 0 2px 8px rgba(123,47,242,0.04);
-        }
-        .btn {
-            display: inline-block;
-            padding: 0.6rem 1.5rem;
-            border-radius: 25px;
-            font-weight: 600;
-            font-size: 1rem;
-            margin: 1rem 0.5rem 0 0.5rem;
-            text-decoration: none;
-            background: #ff61a6;
-            color: #fff;
-            box-shadow: 0 2px 8px rgba(123,47,242,0.08);
-            transition: background 0.2s, box-shadow 0.2s;
-        }
-        .btn:hover {
-            background: #e040fb;
-            box-shadow: 0 4px 16px rgba(255,97,166,0.16);
-        }
-        strong {
-            color: #7b2ff2;
-        }
-        @media (max-width: 900px) {
-            header h1 {
-                font-size: 1.2rem;
-            }
-            nav {
-                margin-right: 0.5rem;
-            }
-            .Hcontainer {
-                margin: 1.5rem auto;
-            }
-            .dashboard-grid {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .card {
-                padding: 1.2rem 0.5rem;
-                min-width: unset;
-            }
-        }
-    </style> -->
+    
 </head>
 <body>
    <%- include ('../partials/header.ejs') %>
@@ -168,19 +17,32 @@
    <section class="Hcontainer">
         <div class="dashboard-grid">
             <div class="card">
-                <h2>My Plastic Waste Logs</h2>
-                <% if(wasteLogged === null) { %>
-                    <ul>
-                <p>No waste logged yet.</p>
-                </ul>
-                <% } else { %>
-                <ul>
-                    <li> <%= wasteLogged.wasteType%> - <%=wasteLogged.quantity%> kg</li>
-                    <li>Plastic Bags - 2 kg - Collected 2025-09-18</li>
-                    <li>Packaging Waste - 3 kg - Collected 2025-09-15</li>
-                </ul>
-                <% } %>
-                <a href="/logwaste" class="btn">Add New Entry</a>
+                <h2>Your Waste Requests</h2>
+       <table>
+        <tr>
+        <th>Waste Type</th>
+         <th>Status</th>
+        <th>Collector</th>
+        <th>Request Date</th>
+        </tr>
+        <% wasteLogged.forEach(req => { %>
+         <tr>
+         <td><%= req.waste_type %></td>
+        <td>
+              <% if (req.status === 'pending') { %>
+                <span style="color: orange; font-weight: 600;"><%= req.status %></span>
+              <% } else if (req.status === 'accepted') { %>
+                <span style="color: green; font-weight: 600;"><%= req.status %></span>
+              <% } else { %>
+                <span style="color: gray; font-weight: 600;"><%= req.status %></span>
+              <% } %>
+            </td>
+            <td><%= req.collector_name || 'Not assigned yet' %></td>
+            <td><%= req.created_at || '-' %></td>
+         </tr>
+        <% }) %>
+        </table>
+                <!-- <a href="/logwaste" class="btn">Add New Entry</a> -->
 
                 <h2 style="margin-top:20px;">Rewards</h2>
                 <p>Total Points: <strong>0</strong></p>
