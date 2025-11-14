@@ -17,8 +17,7 @@ exports.postlogin = [
     check("email").isEmail().withMessage("Enter a valid email"),
     check("password").notEmpty().withMessage("Password is required"),
   
-  async (req,res,next) => {
-    console.log("Login attempt:", req.body);      
+    async (req,res,next) => {      
       const errorsResult = validationResult(req);
     if (!errorsResult.isEmpty()) {
       return res.render("Auth/login", {
@@ -31,7 +30,6 @@ exports.postlogin = [
     const { email, password, userType } = req.body;
 
     if (!email || !password || !userType) {
-    console.log("Missing fields in login");
       return res.render("Auth/login", {
         errors: [],
         errorMessage: "All fields are required",
@@ -50,11 +48,8 @@ exports.postlogin = [
             resolve(user);
           });
         });
-        console.log("found user : ",userData)
       } else if (userType === "collector") {
-        console.log("Looking for collector");
         userData = await new Promise((resolve, reject) => {
-          console.log("Fetching collector by email:", email);
           Collector.getCollector(email, (err, collector) => {
             if (err) return reject(err);
             resolve(collector);
@@ -223,7 +218,7 @@ exports.postsignup = [
     }
 
     try {
-      // ✅ hash after validation (better performance)
+      //  hash after validation (better performance)
       const hashedPassword = await bcrypt.hash(password, 10);
 
       if (userType === "user") {
@@ -247,7 +242,7 @@ exports.postsignup = [
         await newCollector.save();
       }
 
-      // ✅ Always redirect after async operations complete
+      //  Always redirect after async operations complete
       return res.redirect("/login");
     } catch (err) {
       console.error("Signup Error:", err);

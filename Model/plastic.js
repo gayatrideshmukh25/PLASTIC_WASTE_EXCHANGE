@@ -102,6 +102,14 @@ class Waste {
       //              callback(result);
       //           } 
       //       })
+
+      static getWasteById(requestId, callback) {
+        const sql = "SELECT * FROM waste_requests WHERE request_id = ?";
+        conn.query(sql, [requestId], (err, results) => {
+          if (err) return callback(err);
+          callback(null, results[0]);
+        });
+      }
 }
 
 module.exports = Waste;

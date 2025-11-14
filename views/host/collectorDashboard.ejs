@@ -17,21 +17,10 @@
         <div class="dashboard-grid">
           
             <div class="card">
-                <!-- <h2>Pending Collection Tasks</h2>
-                <% if(wasteLogged.length === 0) { %>
-                    <p>No pending tasks at the moment.</p>
-                <% } else { %>
-                    <ul>
-                        <% wasteLogged.forEach(task => { %>
-                            <li>
-                                User: <%= task.user_name %> - <%= task.quantity %> <%= task.waste_type %> - Location: <%= task.pickup_address %>
-                            </li>
-                        <% }) %>
-                        <% } %>
-                    </ul>
-                    <h3>Assigned Waste Requests</h3>
-
-<div class="table-container"> -->
+                <h2>Waste Collection Requests</h2>
+                <% if(wasteLogged.length === 0){ %>
+                  <p>No waste collection requests available at the moment.</p>  
+                <% } %>
   <table>
     <thead>
       <tr>
@@ -45,6 +34,7 @@
       </tr>
     </thead>
     <tbody>
+      
       <% wasteLogged.forEach(req => { %>
         <tr>
           <td><%= req.user_name %></td>
@@ -68,16 +58,13 @@
             <% } else if (req.status === 'accepted') { %>
               <a href="/collectorDashboard/complete/<%= req.request_id %>" class="btn" style="background:green;">Mark Completed</a>
             <% } else { %>
-              <span>Completed</span>
+              <span class="btn" style="background: #2ecc71;">Completed</span>
             <% } %>
           </td>
         </tr>
       <% }) %>
     </tbody>
   </table>
-<!-- </div> -->
-
-                <!-- <a href="/collector/tasks/add" class="btn">Mark Task Completed</a> -->
             </div>
         </div>
     </section>

@@ -8,7 +8,7 @@
       <div id="nearestCollector"></div>
     </div>
     <hr>
-      <form id="wasteForm" method="post" action="/postRequest">
+      <form id="wasteForm" method="post" action="/userDashboard/postRequest">
          <input type="hidden" id="collectorId" name="collector_id">
          <input type="hidden" id="userId" name="user_id" value="<%= user.id %>">
           <div>
@@ -67,7 +67,7 @@
         const longitude = position.coords.longitude;
         locationStatus.textContent = `Your location: (${latitude.toFixed(4)}, ${longitude.toFixed(4)})`;
 
-        fetch(`/nearestCollector?lat=${latitude}&lng=${longitude}`)
+        fetch(`/userDashboard/nearestCollector?lat=${latitude}&lng=${longitude}`)
           .then(res => res.json())
           .then(data => {
             if (data.name) {

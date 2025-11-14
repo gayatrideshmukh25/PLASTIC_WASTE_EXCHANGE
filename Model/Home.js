@@ -58,5 +58,17 @@ class User {
     }
 })
    }
+
+   static add_points(user_id,points,callback){
+      const updatePoints = `update users set reward_points = reward_points + ? where id = ?;`
+        conn.query(updatePoints,[points,user_id],(err,result) => {
+            if(err){
+                console.log(err);
+                callback(err,null);
+                return;
+            }
+            callback(null,result);
+        })
+    }
 }
 module.exports = User;

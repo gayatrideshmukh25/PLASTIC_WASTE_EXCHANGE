@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rewards | Plastic Exchange System</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+<body>
+  <%- include ('../partials/header.ejs') %>
+  <%- include ('../partials/profile.ejs') %>
+
+ <div class="Hcontainer">
+        <div class="dashboard-grid">
+    <div class="card">
+    <h2>🎁 Rewards & Coupons</h2>
+    
+    <div class="points-box">
+      Your Reward Points: <%= user.reward_points %>
+    </div>
+
+    <h3>⭐Available Coupons⭐</h3>
+    <% coupons.forEach(c => { %>
+      <div class="card">
+        <b><%= c.name %></b> — <%= c.description %>🌿<br>
+        <small>Points Required: <%= c.points_required %></small><br>
+        <form method="POST" action="/userDashboard/rewards/redeem">
+          <input type="hidden" name="coupon_id" value="<%= c.id %>">
+          <button class="btn" type="submit">Redeem</button>
+        </form>
+      </div>
+    <% }) %>
+    <% if (message) { %>
+  <div class="alert">
+    <%= message %>
+  </div>
+<% } %>
+
+    <h3>Your Redeemed Coupons</h3>
+    <% if (userCoupons.length === 0) { %>
+      <p>No coupons redeemed yet.</p>
+    <% } else { %>
+      <% userCoupons.forEach(uc => { %>
+        <div class="card">
+          <b><%= uc.name %></b> — <%= uc.description %>🌿<br>
+          <span class="status">Status: <%= uc.status %></span>
+        </div>
+      <% }) %>
+    <% } %>
+    </div>
+  </div>
+</div>
+
+    <%- include ('../partials/footer.ejs') %>
+</body>
+</html>
