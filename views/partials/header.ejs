@@ -13,21 +13,21 @@
         </h1>
         <nav>
             <% if(user.userType === 'user'){ %>   
-            <a href="/userDashboard">userDashboard</a>
+            <a href="/userDashboard"><i class="fa-solid fa-house"></i></a>
             <a href="/userDashboard/sendRequest">Send Waste Request</a>
             <a href="/userDashboard/rewards">Rewards</a>
             <span id="profile-shortcut"  title="Quick Profile">
                 <i class="fa-solid fa-user-circle" style="font-size:1.8rem; color:#7b2ff2; vertical-align:middle;"></i>
             </span>
             <% }else if (user.userType === 'collector'){ %>
-            <a href="/collectorDashboard">collectorDashboard</a>
-            <a href="/collector/tasks">My Tasks</a>
+            <a href="/collectorDashboard"><i class="fa-solid fa-house"></i></a>
+            <a href="/collectorDashboard/pendingTasks">My Tasks</a>
             <a href="/collector/completed">Completed Collections</a>
              <span id="profile-shortcut"  title="Quick Profile">
                 <i class="fa-solid fa-user-circle" style="font-size:1.8rem; color:#7b2ff2; vertical-align:middle;"></i>
             </span>
             <% } else if (user.userType === 'admin'){ %>
-            <a href="/adminDashboard">adminDashboard</a>
+            <a href="/adminDashboard"><i class="fa-solid fa-house"></i></a>
             <a href="/admin/users">Users</a>
             <a href="/admin/collectors">Collectors</a>
             <a href="/admin/reports">Reports</a>

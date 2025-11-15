@@ -110,6 +110,17 @@ class Waste {
           callback(null, results[0]);
         });
       }
-}
 
+      // static getPendingWaste(userId, callback) {
+      //   const sql = `SELECT waste_requests.*, users.name AS user_name ,users.email AS user_email ,users.address AS user_address
+      //               FROM waste_requests
+      //               JOIN users ON waste_requests.user_id = users.id
+      //               WHERE waste_requests.collector_id = ? AND status = 'pending'`;
+      //   conn.query(sql,[userId],(err,result) => {
+      //     if(err) return callback(err);
+      //     callback(null,result);
+
+      //   })
+      // }
+}
 module.exports = Waste;

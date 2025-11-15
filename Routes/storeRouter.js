@@ -1,8 +1,19 @@
 const express = require('express');
 const storeRouter = express.Router();
+const { pendingTasks,about,contact,learnMore } = require('../controller/storecontroller');
 
-storeRouter.get('/',(req,resp,next) => {
-    resp.render('host/home');
-});
+function isAuthenticated(req, res, next) {
+    if (req.session && req.session.user) {
+        return next();
+    }
+    res.redirect('/login'); 
+}
+
+
+storeRouter.get('/collectorDashboard/pendingTasks',isAuthenticated,pendingTasks);
+storeRouter.get('/about',about);
+storeRouter.get('/contact',contact);
+storeRouter.get('/learnMore',learnMore);
+
 
 module.exports = storeRouter;
