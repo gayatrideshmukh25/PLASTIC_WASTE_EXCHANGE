@@ -70,5 +70,16 @@ class User {
             callback(null,result);
         })
     }
+
+    static getAllUsers(callback){
+      const query = `SELECT * FROM users WHERE userType = 'user';`;
+        conn.query(query, (err, results) => {
+            if (err) {
+                console.log(err);
+                return callback(err, null);
+            }
+            callback(null, results);
+        });
+    }
 }
 module.exports = User;

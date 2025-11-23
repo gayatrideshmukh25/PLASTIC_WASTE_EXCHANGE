@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Checkout - Plastic Waste Exchange</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="/style.css" rel="stylesheet">
+  <style>
+    /* small page-specific tweaks that follow project theme */
+    .checkout-wrap { max-width: 720px; margin: 3rem auto; padding: 0 1rem; }
+    .checkout-card { padding: 2rem; border-radius: 24px; background:#fff; box-shadow: 0 12px 40px rgba(123,47,242,0.08); }
+    .summary-row { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:0.6rem 0; border-bottom:1px dashed rgba(123,47,242,0.06); }
+    .summary-row:last-child { border-bottom: none; }
+    .label { color:#5e548e; font-weight:600; }
+    .value { color:#1e2a78; font-weight:700; }
+    .price-small { color:#5e548e; font-weight:600; }
+    .final-price { font-size:1.6rem; color:#7b2ff2; font-weight:800; margin-top:1rem; text-align:center; }
+    .checkout-actions { display:flex; gap:12px; justify-content:center; margin-top:1.5rem; }
+    .note { text-align:center; color:#5e548e; margin-top:0.75rem; font-size:0.95rem; }
+    @media (max-width:520px){ .summary-row { flex-direction:column; align-items:flex-start; } .final-price{ text-align:left; } }
+  </style>
+</head>
+<body>
+  <div class="checkout-wrap">
+    <div class="checkout-card card">
+      <h2 style="color:#7b2ff2; margin:0 0 1rem 0;">Checkout</h2>
+
+      <form action="/checkout/pay" method="POST">
+        <input type="hidden" name="originalPrice" value="<%= originalPrice %>">
+        <input type="hidden" name="discount" value="<%= discount %>">
+        <input type="hidden" name="finalPrice" value="<%= finalPrice %>">
+
+        <div class="summary-row">
+          <div class="label">Original Price</div>
+          <div class="value">₹<%= originalPrice %></div>
+        </div>
+
+        <div class="summary-row">
+          <div class="label">Discount</div>
+          <div class="value"><span class="price-small"><%= discount %>%</span></div>
+        </div>
+
+        <div class="summary-row">
+          <div class="label">You Save</div>
+          <div class="value">₹<%= (originalPrice - finalPrice).toFixed(2) %></div>
+        </div>
+
+        <div class="final-price">Final Price: ₹<%= finalPrice %></div>
+
+        <div class="checkout-actions">
+          <button type="submit" class="btn">Proceed to Pay</button>
+          <a href="/products" class="btn" style="display:inline-flex; align-items:center; justify-content:center; padding:0.6rem 1rem;">Continue Shopping</a>
+        </div>
+
+        <div class="note">Secure payment. You will be redirected to the payment gateway after clicking Proceed to Pay.</div>
+      </form>
+    </div>
+  </div>
+
+ 
+</body>
+</html>

@@ -5,7 +5,6 @@ const Collector = require('../Model/Collector');
 const Waste = require('../Model/plastic');
 const {validationResult,check} = require('express-validator');
 
-
 exports.login = (req,resp,next) => {
     resp.render('Auth/login',{
       errors: [],

@@ -86,22 +86,7 @@ class Waste {
           callback(null, result);
         });
       }
-      //  const wasteLoggedQuery = `select * from waste_requests
-      //                             where collector_id = ? ;`
-      //       conn.query(wasteLoggedQuery,[id],(err,result) => {
-      //         if(err){
-      //           console.log("error fetching waste logged",err);
-      //           callback(null)
-      //           }
-      //         else if(result.length === 0){
-      //           console.log("no waste logged");
-      //           callback(null)
-      //           }   
-      //          else {
-      //             //  const wasteLogged = result[0];
-      //              callback(result);
-      //           } 
-      //       })
+
 
       static getWasteById(requestId, callback) {
         const sql = "SELECT * FROM waste_requests WHERE request_id = ?";
@@ -111,16 +96,26 @@ class Waste {
         });
       }
 
-      // static getPendingWaste(userId, callback) {
-      //   const sql = `SELECT waste_requests.*, users.name AS user_name ,users.email AS user_email ,users.address AS user_address
-      //               FROM waste_requests
-      //               JOIN users ON waste_requests.user_id = users.id
-      //               WHERE waste_requests.collector_id = ? AND status = 'pending'`;
-      //   conn.query(sql,[userId],(err,result) => {
-      //     if(err) return callback(err);
-      //     callback(null,result);
+      static getPendingWaste(userId, callback) {
+        const sql = `SELECT waste_requests.*, users.name AS user_name ,users.email AS user_email ,users.address AS user_address
+                    FROM waste_requests
+                    JOIN users ON waste_requests.user_id = users.id
+                    WHERE waste_requests.collector_id = ? AND status = 'pending'`;
+        conn.query(sql,[userId],(err,result) => {
+          if(err) return callback(err);
+          callback(null,result);
 
-      //   })
-      // }
+        })
+      }
+      static getCompletedWaste(userId,callback){
+        const sql = `SELECT waste_requests.*, users.name AS user_name ,users.email AS user_email ,users.address AS user_address
+                    FROM waste_requests
+                    JOIN users ON waste_requests.user_id = users.id
+                    WHERE waste_requests.collector_id = ? AND status = 'completed'`;
+         conn.query(sql,[userId],(err,result) => {
+          if(err) return callback(err);
+          callback(null,result);
+        })           
+      }
 }
 module.exports = Waste;

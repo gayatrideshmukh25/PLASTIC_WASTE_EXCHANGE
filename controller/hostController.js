@@ -46,19 +46,144 @@ exports.collectorDashboard = (req,res,next) => {
 });
     });
 }
-
-exports.adminDashboard =(req,resp,next) => {
+exports.adminDashboard = (req, resp, next) => {
     console.log("Admin Dashboard accessed");
-    const admin = req.session.user;
-    const {userType} = admin;
-    if(userType !== 'admin'){
-            console.log("unauthorized access");
+
+    const admin = req.session.user; // logged-in user
+    console.log("Admin session user:", admin);
+
+    if (!admin) {
+        return resp.redirect('/login');
+    }
+
+    const { userType } = admin;
+
+    // Check if the user is admin
+    if (userType !== 'admin') {
+        console.log("Unauthorized access");
+        return resp.redirect('/login');
+    }
+
+    // 1️⃣ Fetch admin details
+    conn.query('SELECT * FROM admin WHERE id = ?', [admin.id], (err, adminResults) => {
+        if (err) {
+            console.log("Database error (admin):", err);
+            return resp.status(500).send("Database error");
+        }
+
+        if (adminResults.length === 0) {
+            console.log("Admin not found");
             return resp.redirect('/login');
         }
-    resp.render('host/adminDashboard',{user : admin});
+
+        const adminData = adminResults[0];
+        const sql = `
+SELECT
+ (SELECT IFNULL(SUM(quantity),0) FROM waste_requests WHERE status='completed') AS total_waste_collected,
+ (SELECT COUNT(*) FROM users) AS total_users,
+ (SELECT COUNT(*) FROM user_coupons) AS total_coupons_redeemed
+`;
+
+conn.query(sql, (err, data) => {
+  if (err) throw err;
+  const stats = data[0];
+
+ 
+
+
+        // 2️⃣ Fetch all users
+        User.getAllUsers((err, userResults) => {
+            if (err) {
+                console.log("Error fetching users:", err);
+                return resp.status(500).send("Database error");
+            }
+         Collector.getAllCollectors((err, collectorResults) => {
+            if (err) {
+                console.log("Error fetching collectors:", err);
+                return resp.status(500).send("Database error");
+            }   
+              // 4️⃣ Render Dashboard Page
+                resp.render('host/adminDashboard', {
+                    user: adminData,
+                    users: userResults,
+                    collectors: collectorResults,
+                    waste: stats.total_waste_collected,
+                    total_users: stats.total_users,
+                    redeemed: stats.total_coupons_redeemed
+                });
+            });
+        });
+    });
+    });
 };
 
 
+exports.Users = (req, res) => {
+    const admin = req.session.user;
+
+    conn.query('SELECT * FROM admin WHERE id = ?', [admin.id], (err, adminResults) => {
+        if (err) {
+            console.log("Database error (admin):", err);
+            return res.status(500).send("Database error");
+        }
+
+        if (adminResults.length === 0) {
+            console.log("Admin not found");
+            return res.redirect('/login');
+        }
+
+        const adminData = adminResults[0];  // NOW accessible
+
+        // 🔥 Move getAllUsers *inside* the admin query callback
+        User.getAllUsers((err, users) => {
+            if (err) {
+                console.log("Error fetching users:", err);
+                return res.status(500).send("Database error");
+            }
+
+            // 🔥 Now adminData is available here!
+            res.render('host/allUsers', { 
+                user: adminData,  // admin data
+                users: users      // users list
+            });
+        });
+    });
+};
+
+ 
+
+
+exports.Collectors = (req, res) => {
+    const admin = req.session.user;
+
+    conn.query('SELECT * FROM admin WHERE id = ?', [admin.id], (err, adminResults) => {
+        if (err) {
+            console.log("Database error (admin):", err);
+            return res.status(500).send("Database error");
+        }
+
+        if (adminResults.length === 0) {
+            console.log("Admin not found");
+            return res.redirect('/login');
+        }
+
+        const adminData = adminResults[0];  // NOW accessible
+
+        // 🔥 Move getAllUsers *inside* the admin query callback
+        Collector.getAllCollectors((err, collectors) => {
+            if (err) {
+                console.log("Error fetching users:", err);
+                return res.status(500).send("Database error");
+            }
+
+            // 🔥 Now adminData is available here!
+            res.render('host/allCollectors', { 
+                user: adminData,  // admin data
+                collectors: collectors     // users list
+            });
+        });
+    });
+};
 exports.completeRequest = (req,res) => {
     const id = req.params.request_id;
     console.log("Completing request ID:", id);
@@ -142,7 +267,6 @@ exports.postRequest = (req, res) => {
     pickup_address, pickup_lat, pickup_lng,
     preferred_date, preferred_time, notes
   } = req.body;
-  // console.log(req.body);
   const wasteRequest = new Waste(
     user_id,
     collector_id,
@@ -253,4 +377,88 @@ exports.redeemCoupon = (req, res) => {
     }
     res.redirect('/userDashboard/rewards');
   });
+};
+
+exports.productPage = (req, res) => {
+  const products = [
+    {
+      id: 1,
+      name: "Bamboo Toothbrush",
+      price: 99,
+      description: "Biodegradable bamboo toothbrush.",
+      image: "/images/products/bamboo_toothbrush.jpeg"
+    },
+    {
+      id: 2,
+      name: "Metal Straw Set",
+      price: 149,
+      description: "Reusable stainless-steel straws.",
+      image: "/images/products/metal_straws.jpeg"
+    },
+    {
+      id: 3,
+      name: "Cloth Grocery Bag",
+      price: 199,
+      description: "100% cotton reusable bag.",
+      image: "/images/products/cloth_bag.jpeg"
+    },
+    {
+      id: 4,
+      name: "Recycled Notepad",
+      price: 129,
+      description: "Notebook made from recycled paper.",
+      image: "/images/products/notepad.jpeg"
+    },
+    {
+      id: 5,
+      name: "Organic Hand Soap",
+      price: 159,
+      description: "Natural and chemical-free soap.",
+      image: "/images/products/organic_soap.jpeg"
+    }
+  ];
+
+  res.render("host/product", { products });
+};
+
+exports.applyCoupon = (req, res) => {
+    const { product_id, price, coupon_code } = req.body;
+    const userId = req.session.user.id;
+     console.log("Applying coupon:", coupon_code, "for user ID:", userId, "on product ID:", product_id, "with price:", price);
+    const sql = `
+        SELECT uc.*, c.discount 
+        FROM user_coupons uc 
+        JOIN coupons c ON uc.coupon_id = c.id
+        WHERE uc.code = ? AND uc.user_id = ? AND uc.status = 'active'
+    `;
+
+    conn.query(sql, [coupon_code, userId], (err, result) => {
+      console.log("Coupon found:", result[0]);
+        if (err) return res.status(500).send("Database error");
+        
+        if (result.length === 0) {
+          console.log("Coupon not found or inactive for user:", result[0]);          
+            return res.send("Invalid / expired coupon");
+        }
+        console.log("Coupon found:", result[0]);
+
+        const discount = result[0].discount; // e.g. 10, 20, 30 (percentage)
+        const originalPrice = Number(price);
+
+        // ⭐ Percentage discount logic
+        const finalPrice = originalPrice - (originalPrice * discount / 100);
+
+        // Mark coupon as used
+        conn.query(
+            "UPDATE user_coupons SET status='used' WHERE code = ?",
+            [coupon_code]
+        );
+
+        res.render("host/checkout", {
+            productId: product_id,
+            originalPrice,
+            discount,
+            finalPrice
+        });
+    });
 };

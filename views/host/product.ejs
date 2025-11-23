@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rewards | Plastic Exchange System</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+<body>
+<h1>Eco-Friendly Products</h1>
+
+<div class="products">
+  <% products.forEach(p => { %>
+    <div class="product-card">
+      <img src="<%= p.image %>" alt="<%= p.name %>">
+      <h3><%= p.name %></h3>
+      <p><%= p.description %></p>
+      <p><b>Price:</b> ₹<%= p.price %></p>
+
+      <form action="/userDashboard/apply-coupon" method="POST">
+        <input type="hidden" name="product_id" value="<%= p.id %>">
+        <input type="hidden" name="price" value="<%= p.price %>">
+        <input type="text" name="coupon_code" placeholder="Enter coupon code">
+        <button type="submit">Apply Coupon</button>
+      </form>
+
+      <!-- <% if (p.discountedPrice) { %>
+        <p class="discount">Discounted Price: ₹<%= p.discountedPrice %></p>
+      <% } %> -->
+
+      <form action="/buy" method="POST">
+        <input type="hidden" name="product_id" value="<%= p.id %>">
+        <input type="hidden" name="final_price" value="<%= p.discountedPrice || p.price %>">
+        <button type="submit">Buy Now</button>
+      </form>
+    </div>
+  <% }) %>
+</div>
+</body>
+</html>

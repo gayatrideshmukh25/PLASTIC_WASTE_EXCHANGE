@@ -1,7 +1,7 @@
 const express = require('express');
 const hostRouter = express.Router();
 
-const { postrequest,home,userDashboard,collectorDashboard,adminDashboard,sendRequest,nearestCollector,postRequest,acceptRequest,rejectRequest,completeRequest,rewards,redeemCoupon } = require('../controller/hostController');
+const { home,userDashboard,collectorDashboard,adminDashboard,sendRequest,nearestCollector,postRequest,acceptRequest,rejectRequest,completeRequest,rewards,redeemCoupon,Users,Collectors, applyCoupon, productPage } = require('../controller/hostController');
 function isAuthenticated(req, res, next) {
     if (req.session && req.session.user) {
         return next();
@@ -10,20 +10,24 @@ function isAuthenticated(req, res, next) {
 }
 
 hostRouter.get('/',home);
+
 hostRouter.get('/userDashboard',isAuthenticated,userDashboard);
-
-hostRouter.get('/collectorDashboard',isAuthenticated,collectorDashboard);
-hostRouter.get('/adminDashboard',isAuthenticated,adminDashboard);
-
 hostRouter.get('/userDashboard/sendRequest',isAuthenticated,sendRequest);
 hostRouter.get('/userDashboard/nearestCollector',isAuthenticated,nearestCollector);
 hostRouter.post('/userDashboard/postRequest',isAuthenticated,postRequest);
 hostRouter.get('/userDashboard/rewards',isAuthenticated,rewards);
 hostRouter.post('/userDashboard/rewards/redeem', isAuthenticated,redeemCoupon );
+hostRouter.post('/userDashboard/apply-coupon',isAuthenticated,applyCoupon);
+hostRouter.post('/products',isAuthenticated,productPage);
 
+hostRouter.get('/collectorDashboard',isAuthenticated,collectorDashboard);
 hostRouter.get('/collectorDashboard/accept/:request_id', isAuthenticated,acceptRequest);
 hostRouter.get('/collectorDashboard/reject/:request_id', isAuthenticated,rejectRequest);
 hostRouter.get('/collectorDashboard/complete/:request_id',isAuthenticated, completeRequest);
+
+hostRouter.get('/adminDashboard',isAuthenticated,adminDashboard);
+hostRouter.get('/admin/users',Users);
+hostRouter.get('/admin/collectors',Collectors);
 
    
 

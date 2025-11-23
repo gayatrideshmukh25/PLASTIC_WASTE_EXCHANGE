@@ -64,5 +64,12 @@ class Collector {
     }
 })
    }
+    static getAllCollectors(callback) {
+    const query = 'SELECT * FROM collector';
+    conn.query(query, (err, results) => {
+      if (err) return callback(err);
+      callback(null, results);
+    });
+  }
 }
 module.exports = Collector;

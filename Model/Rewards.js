@@ -4,9 +4,9 @@ class Rewards {
           const query = `SELECT * FROM coupons`;
           conn.query(query, callback);
   }
-       static getUserCoupons(userId, callback) {
+    static getUserCoupons(userId, callback) {
     const query = `
-          SELECT uc.id, c.name, c.description, uc.status
+          SELECT uc.id, c.name, c.description,uc.code, uc.status
           FROM user_coupons uc
           JOIN coupons c ON uc.coupon_id = c.id
           WHERE uc.user_id = ?
@@ -37,17 +37,17 @@ class Rewards {
                 new Error("Not enough points to redeem this coupon.")
               );
             }
-
+             
             // 2. Deduct points & insert coupon
             conn.query(
               "UPDATE users SET reward_points = reward_points - ? WHERE id = ?",
               [requiredPoints, userId],
               (err3) => {
                 if (err3) return callback(err3);
-
+                const uniqueCode = 'CPN-' + Math.random().toString(36).substr(2, 9).toUpperCase();
                 conn.query(
-                  "INSERT INTO user_coupons (user_id, coupon_id) VALUES (?, ?)",
-                  [userId, couponId],
+                  "INSERT INTO user_coupons (user_id, coupon_id ,code ,status ) VALUES (?, ? ,? ,?)",
+                  [userId, couponId,uniqueCode,'active'],
                   callback
                 );
               }

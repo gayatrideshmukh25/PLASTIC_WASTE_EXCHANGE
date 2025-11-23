@@ -29,12 +29,14 @@ app.use(session({
         maxAge:null,
         secure : false}
 }))
+
 app.use(authRouter);
 app.use(storeRouter);
 app.use(hostRouter);
 app.use((req,resp,next) => {
     resp.status(404).render('404');
 });
+
 
 const port = 3000||process.env.PORT ;
 app.listen(port,()=>{

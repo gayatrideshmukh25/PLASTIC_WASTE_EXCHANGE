@@ -7,47 +7,111 @@
      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   
 </head>
 <body>
       <%- include ('../partials/header.ejs') %>
       <%- include ('../partials/profile.ejs') %>
+     <main class="main">
+      <!-- <header class="topbar">
+        <h1>Admin Dashboard</h1>
+        <div class="top-actions">
+          <div class="user">Admin ▾</div>
+        </div>
+      </header> -->
 
-    <div class="Hcontainer">
+      <!-- hero image (using uploaded path) -->
+      <!-- <section class="hero">
+        <img src="images/image.png" alt="hero" class="hero-img"/>
+      </section> -->
+     <div class="Hcontainer">
         <div class="dashboard-grid">
+      <section class="cards">
+        <div class="card">
+          <h2 class="card-title">Total Waste Collected (kg)</h2>
+          <div class="card-value"><%=waste  %></div>
+        </div>
+        <br></br>
+        <div class="card">
+          <h2 class="card-title">Total Users Registered</h2>
+          <div class="card-value"><%=  total_users %></div>
+        </div>
+        <br></br>
+        <!-- <div class="card">
+          <div class="card-title">Active Collectors</div>
+         
+        </div> -->
+        <div class="card">
+          <h2 class="card-title">Coupons Redeemed Today</h2>
+          <div class="card-value"><%= redeemed %></div>
+        </div>
+      </section>
+        </div>
+     </div>
+
+
+      <!-- <section class="section card">
+        <h3>User Management</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>User ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Address</th><th>Total Waste</th><th>Points</th><th>Status</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% users.forEach(function(u){ %>
+              <tr>
+                <td><%= u.id %></td>
+                <td><%= u.name %></td>
+                <td><%= u.email %></td>
+                <td><%= u.phone %></td>
+                <td><%= u.address %></td>
+                <td><%= u.totalWaste %></td>
+                <td><%= u.points %></td>
+                <td><span class="badge active"><%= u.status %></span></td>
+                <td class="icons">
+                  <button class="icon">👁️</button>
+                  <button class="icon">✏️</button>
+                  <button class="icon">🗑️</button>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </section> -->
+    </main>
+    <!-- <div class="Hcontainer">
+        <div class="dashboard-grid"> -->
             <!-- Users Card -->
-            <div class="card">
-                <h2>All Users</h2>
-                <ul>
-                    <li>Tanmay - User</li>
-                    <li>Riya - User</li>
-                    <li>Rahul - User</li>
-                </ul>
-                <a href="/admin/users/add" class="btn">Add User</a>
-            </div>
+    <!-- <div class="cardUsers">
+    <h2>All Users</h2>
+
+    <ul>
+        <% users.forEach(user => { %>
+            <li><%= user.name %> - User</li>
+        <% }) %>
+    </ul>
+
+    <a href="/admin/users/add">Add User</a>
+   </div> -->
 
             <!-- Collectors Card -->
-            <div class="card">
-                <h2>All Collectors</h2>
-                <ul>
-                    <li>Collector 1</li>
-                    <li>Collector 2</li>
-                </ul>
-                <a href="/admin/collectors/add" class="btn">Add Collector</a>
-            </div>
+    <!-- <div class="card">
+    <h2>All Collectors</h2>
 
-            <!-- Reports Card -->
-            <div class="card">
-                <h2>Reports & Statistics</h2>
-                <ul>
-                    <li>Total Plastic Collected: 120 kg</li>
-                    <li>Total Rewards Redeemed: 50</li>
-                </ul>
-                <a href="/admin/reports/details" class="btn">View Details</a>
-            </div>
-        </div>
-    </div>
-    <%- include ('../partials/footer.ejs') %>
+    <ul>
+        <% collectors.forEach(c => { %>
+            <li><%= c.name %></li>
+        <% }) %>
+    </ul>
+
+    <a href="/admin/collectors/add">Add Collector</a>
+    </div> -->
+    
+    <!-- </div>
+    </div> -->
+  
     <script>
     const shortcut = document.getElementById('profile-shortcut');
     const modal = document.getElementById('profile-modal');
@@ -69,6 +133,36 @@
             modal.style.display = 'none';
         }
     });
+    // public/js/dashboard.js
+ const ctx1 = document.getElementById('lineChart').getContext('2d');
+
+  new Chart(ctx1, {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      datasets: [{
+        label: 'Waste Collected (kg)',
+        data: [20, 35, 50, 45, 70, 90],
+        borderWidth: 3,
+        tension: 0.3
+      }]
+    }
+  });
+
+  // ----------------- Pie Chart (Static Data) -----------------
+  const ctx2 = document.getElementById('pieChart').getContext('2d');
+
+  new Chart(ctx2, {
+    type: 'pie',
+    data: {
+      labels: ['Plastic', 'PET Bottle', 'Polythene', 'E-Waste'],
+      datasets: [{
+        data: [40, 25, 20, 15],
+        borderWidth: 1
+      }]
+    }
+  });
 </script>
+  <%- include ('../partials/footer.ejs') %>
 </body>
 </html>
