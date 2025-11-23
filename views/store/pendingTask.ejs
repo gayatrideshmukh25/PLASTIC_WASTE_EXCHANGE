@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>userDashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    
+</head>
+<body>
+   <%- include ('../partials/header.ejs') %>
+   <%- include ('../partials/profile.ejs') %>
+   
+   <section class="Hcontainer">
+        <div class="dashboard-grid">
+          
+            <div class="card">
+                <h2>Pending Waste Collection Requests</h2>
+                <% if(wasteLogged.length === 0){ %>
+                  <p>No waste collection Pending available at the moment.</p>  
+                <% } %>
+  <table>
+    <thead>
+      <tr>
+        <th>User Name</th>
+        <th>Email</th>
+        <th>Waste Type</th>
+        <th>Address</th>
+        <th>Status</th>
+        <th>Request Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      <% wasteLogged.forEach(req => { %>
+        <tr>
+          <td><%= req.user_name %></td>
+          <td><%= req.user_email %></td>
+          <td><%= req.waste_type %></td>
+          <td><%= req.user_address %></td>
+          <td>
+            <% if (req.status === 'pending') { %>
+              <span style="color: orange; font-weight: 600;"><%= req.status %></span>
+            <% } else if (req.status === 'accepted') { %>
+              <span style="color: green; font-weight: 600;"><%= req.status %></span>
+            <% } else { %>
+              <span style="color: gray; font-weight: 600;"><%= req.status %></span>
+            <% } %>
+          </td>
+          <td><%= req.created_at || '-' %></td>
+          <td>
+            <% if (req.status === 'pending') { %>
+              <a href="/collectorDashboard/accept/<%= req.request_id %>" class="btn">Accept</a>
+              <a href="/collectorDashboard/reject/<%= req.request_id %>" class="btn" style="background:red;">Reject</a>
+            <% } else if (req.status === 'accepted') { %>
+              <a href="/collectorDashboard/complete/<%= req.request_id %>" class="btn" style="background:green;">Mark Completed</a>
+            <% } else { %>
+              <span class="btn" style="background: #2ecc71;">Completed</span>
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+            </div>
+        </div>
+    </section>
+<%- include ('../partials/footer.ejs') %>
+</body>
+</html>
