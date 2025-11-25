@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup - Plastic Waste Exchange</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="CSS/style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="CSS/authStyle.css" />
+</head>
+<body>
+    <header>
+        <h1>
+            <img src="/images/image.png" alt="Recycle" width="38"/>
+            PLASTIC WASTE EXCHANGE
+        </h1>
+        <nav>
+           <a href="home.html"><i class="fa-solid fa-house"></i></a>
+           <a href="about.html">About</a>
+           <a href="contact.html">Contact</a>
+           <a href="signup.html" class="login-btn">Login</a>
+        </nav>
+    </header>
+
+    <div class="authcontainer">
+        <h2>Signup</h2>
+        <form id="signupForm">
+
+            <input type="text" name="name" id="name" placeholder="Name" required>
+            <div class="error" id="nameError"></div>
+
+            <input type="email" name="email" id="email" placeholder="Email" required>
+            <div class="error" id="emailError"></div>
+
+            <input type="password" name="password" id="password" placeholder="Password" required>
+            <div class="error" id="passwordError"></div>
+
+            <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" required>
+            <div class="error" id="confirmPasswordError"></div>
+
+            <label for="address">Address</label>
+            <textarea id="address" name="address" placeholder="Enter Your Location to exchange" required></textarea>
+            <div class="error" id="addressError"></div>
+
+            <input type="tel" name="phone_no" id="phone_no" placeholder="Phone Number" required>
+            <div class="error" id="phone_noError"></div>
+
+            <select name="userType" id="userType" required>
+                <option value="" disabled selected>Select User Type</option>
+                <option value="user">User</option>
+                <option value="collector">Collector</option>
+            </select>
+            <div class="error" id="userTypeError"></div>
+
+            <div id="collectorFields" style="display: none;">
+                <input type="text" name="city" id="city" placeholder="City">
+                <div class="error" id="cityError"></div>
+
+                <input type="text" name="state" id="state" placeholder="State">
+                <div class="error" id="stateError"></div>
+
+                <input type="text" name="pincode" id="pincode" placeholder="Pincode">
+                <div class="error" id="pincodeError"></div>
+
+                <select name="availablity" id="availability">
+                    <option value="available">Available</option>
+                    <option value="Unavailable">Unavailable</option>
+                </select>
+                <div class="error" id="availablityError"></div>
+            </div>
+
+            <input type="hidden" name="latitude" id="latitude">
+            <input type="hidden" name="longitude" id="longitude">
+
+            <button type="submit" class="submit-btn">Signup</button>
+        </form>
+
+        <p id="signupError" class="error"></p>
+        <p id="signupSuccess" class="success"></p>
+
+        <div class="form-footer">
+            Already have an account? <a href="login.html">Login</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Plastic Waste Exchange. All Rights Reserved.</p>
+    </footer>
+
+   
+    <script src="JS/signup.js"></script>
+</body>
+</html>

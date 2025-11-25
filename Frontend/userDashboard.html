@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>userDashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="CSS/style.css" rel="stylesheet">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    
+</head>
+<body>
+    <header>
+  <h1><img src="images/image.png" alt="Recycle" width="50"/>UserDashboard</h1>
+
+  <nav>
+     <a href="userDashboard.html">Dashboard</a>
+        <a href="request.html">Send Waste Request</a>
+        <a href="rewards.html">Rewards</a>
+         <span id="profile-shortcut"  title="Quick Profile">
+                <i class="fa-solid fa-user-circle" style="font-size:1.8rem; color:#7b2ff2; vertical-align:middle;"></i>
+            </span>
+  </nav>
+<div id="profile-modal" class="profile-modal">
+    <div class="profile-content">
+        <span id="close-modal" class="close">&times;</span>
+        <h2>User Profile</h2>
+        <p id="name"></p>
+        <p id="email"></p>
+        <p id="userType"></p>
+        <a href="/profile/edit" class="btn">Edit Profile</a>
+        <a id="logout" class="btn">Logout</a>
+    </div>
+</div>  
+</header>
+
+<section class="Hcontainer">
+  <div class="dashboard-grid">
+    <div class="card">
+      <h2>Your Waste Requests</h2>
+      <table id="waste-table">
+        <tr>
+          <th>Waste Type</th>
+          <th>Status</th>
+          <th>Collector</th>
+          <th>Request Date</th>
+        </tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer>
+    <p>© 2025 Plastic Waste Exchange. All Rights Reserved.</p>  
+</footer>
+<script src="/JS/user.js"></script>
+</body>
+</html>

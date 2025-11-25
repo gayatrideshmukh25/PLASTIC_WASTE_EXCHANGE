@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Waste Pickup Request</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="CSS/style.css" rel="stylesheet">
+  <link href="CSS/requeststyle.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+
+</head>
+<body>
+ <header>
+  <h1><img src="images/image.png" alt="Recycle" width="50"/>UserDashboard</h1>
+
+  <nav>
+     <a href="userDashboard.html">Home</a>
+        <a href="request.html">Send Waste Request</a>
+        <a href="rewards.html">Rewards</a>
+         <span id="profile-shortcut"  title="Quick Profile">
+                <i class="fa-solid fa-user-circle" style="font-size:1.8rem; color:#7b2ff2; vertical-align:middle;"></i>
+            </span>
+  </nav>
+<div id="profile-modal" class="profile-modal">
+    <div class="profile-content">
+        <span id="close-modal" class="close">&times;</span>
+        <h2>User Profile</h2>
+        <p id="name"></p>
+        <p id="email"></p>
+        <p id="userType"></p>
+        <a href="/profile/edit" class="btn">Edit Profile</a>
+        <a href="/logout" class="btn">Logout</a>
+    </div>
+</div>  
+</header>
+
+<main>
+    <div class="card">
+      <h1>Send Waste Pickup Request</h1>
+       <div class="location-section">
+      <h3>Find Nearest Collector</h3>
+      <button type="button" id="findLocationBtn">Use My Location</button>
+      <p id="locationStatus"></p>
+      <div id="nearestCollector"></div>
+    </div>
+    <hr>
+      <form id="wasteForm" method="post" action="/userDashboard/postRequest">
+         <input type="hidden" id="collectorId" name="collector_id">
+         <input type="hidden" id="user_id" name="user_id">
+          <div>
+          <label for="wasteType">Waste Type</label>
+          <select id="wasteType" name="waste_type" required>
+            <option value="">Select Waste Type</option>
+            <option value="dry">Dry / Recyclable</option>
+            <option value="wet">Wet / Organic</option>
+            <option value="e-waste">E-Waste</option>
+            <option value="hazardous">Hazardous</option>
+            <option value="bulk">Bulk Items</option>
+          </select>
+        </div>
+        <div>
+          <label for="quantity">Quantity</label>
+          <input type="text" id="quantity" name="quantity" placeholder="e.g. 3 bags / 5 kg">
+        </div>
+        <div class="full">
+          <label for="address">Pickup Address</label>
+          <textarea id="address" name="pickup_address" placeholder="Enter pickup location" required></textarea>
+        </div>
+        <div>
+          <label for="date">Preferred Date</label>
+          <input type="date" id="date" name="preferred_date">
+        </div>
+        <div>
+          <label for="time">Preferred Time</label>
+          <input type="time" id="time" name="preferred_time">
+        </div>
+        <div class="full">
+          <label for="notes">Additional Notes</label>
+          <textarea id="notes" name="notes" placeholder="Any extra details for pickup team"></textarea>
+        </div>
+        <div class="actions">
+          <button type="submit">Send Request</button>
+          <button type="reset" class="btn-secondary">Reset</button>
+        </div>
+        <div id="status"></div>
+      </form>
+    </div>
+  </main>
+  <script src="/JS/request.js"></script>
+<footer>
+    <p>© 2025 Plastic Waste Exchange. All Rights Reserved.</p>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="CSS/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   
+</head>
+<body>
+    <header>
+  <h1><img src="images/image.png" alt="Recycle" width="50"/>AdminDashboard</h1>
+
+  <nav> 
+        <a href="adminDashboard.html">Dashboard</i></a>
+        <a href="allUsers.html">Users</a>
+        <a href="allCollectors.html">Collectors</a>
+       
+         <span id="profile-shortcut"  title="Quick Profile">
+                <i class="fa-solid fa-user-circle" style="font-size:1.8rem; color:#7b2ff2; vertical-align:middle;"></i>
+            </span>
+  </nav>
+<div id="profile-modal" class="profile-modal">
+    <div class="profile-content">
+        <span id="close-modal" class="close">&times;</span>
+        <p id="name"></p>
+        <p id="email"></p>
+        <p id="userType"></p>
+        <a href="/profile/edit" class="btn">Edit Profile</a>
+        <a id="logout" class="btn">Logout</a>
+    </div>
+</div>  
+</header>
+<div class="Hcontainer">
+        <div class="dashboard-grid">
+            <!-- Users Card -->
+    <div class="cardUsers" id="cardUsers">
+    <h2>All Users</h2>
+
+    <ul>
+       
+    </ul>
+   </div>
+
+         
+    
+     </div>
+    </div>
+  
+<script src="/JS/allUsers.js"></script>
+<footer>
+        <p>© 2025 Plastic Waste Exchange. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
