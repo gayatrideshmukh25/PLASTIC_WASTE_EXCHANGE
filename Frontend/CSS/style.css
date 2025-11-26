@@ -257,7 +257,7 @@ body {
             box-shadow: 0 8px 32px rgba(161,140,209,0.10);
             padding: 2.5rem 2.5rem;
             min-width: 350px;
-            min-height: 350px;
+            min-height: 450px;
             max-width: 100%;
             /* width: 100%; */
             text-align: center;
@@ -729,6 +729,69 @@ h1{
     /* Make important columns wrap instead of truncating on very small screens */
     .card table td.wrap-small { white-space: normal; }
 }
+#addCouponForm {
+    background: #f8f5ff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 15px;
+    border-left: 4px solid #7b2ff2;
+}
+
+#addCouponForm h3 {
+    color: #7b2ff2;
+    margin-bottom: 15px;
+}
+
+#addCouponForm label {
+    font-weight: 600;
+    display: block;
+    margin-top: 8px;
+}
+
+#addCouponForm input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #d7c7ff;
+    border-radius: 8px;
+    margin-top: 5px;
+    transition: 0.2s;
+}
+
+#addCouponForm input:focus {
+    outline: none;
+    border-color: #7b2ff2;
+    box-shadow: 0px 0px 5px rgba(123, 47, 242, 0.4);
+}
+
+
+
+/* ==== MESSAGE BOX ==== */
+
+
+/* ==== TABLE ==== */
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background: white;
+}
+
+table th {
+    background: #7b2ff2;
+    color: white;
+    padding: 12px;
+    font-size: 15px;
+}
+
+table td {
+    padding: 12px;
+    border-bottom: 2px solid #f0e7ff;
+    font-size: 14px;
+}
+
+table tr:hover {
+    background: #f3eaff;
+}
 /* =========================
    END DASHBOARD TABLE
    ========================= */
@@ -759,3 +822,267 @@ footer a:hover {
     color: #7b2ff2;
     text-decoration: underline;
 }
+
+/* =========================
+   Admin - All Collectors Page Styles
+   ========================= */
+
+/* Page background & base */
+body {
+  font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  margin: 0;
+  color: #333;
+  background: linear-gradient(135deg,#f7f3ff 0%, #fff0f6 100%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Header / Navbar */
+header {
+  background: #ffffff;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 4px 18px rgba(123,47,242,0.06);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+header h1 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  color: #7b2ff2;
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.6px;
+}
+header h1 img { border-radius: 8px; }
+
+/* Nav links */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+nav a {
+  color: #5e548e;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all .18s ease;
+}
+nav a:hover {
+  color: #fff;
+  background: linear-gradient(90deg,#7b2ff2,#ff61a6);
+  transform: translateY(-1px);
+}
+
+/* Profile shortcut */
+#profile-shortcut {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-left: 8px;
+  border-radius: 50%;
+  transition: transform .15s ease, box-shadow .15s ease;
+  cursor: pointer;
+}
+#profile-shortcut i {
+  color: #7b2ff2;
+  font-size: 1.2rem;
+}
+#profile-shortcut:hover {
+  transform: scale(1.06);
+  box-shadow: 0 6px 20px rgba(123,47,242,0.12);
+}
+
+/* Profile modal */
+.profile-modal {
+  display: none; /* toggled via JS */
+  position: fixed;
+  inset: 0;
+  background: rgba(10,10,10,0.36);
+  align-items: center;
+  justify-content: center;
+  z-index: 120;
+}
+.profile-content {
+  background: #fff;
+  width: min(420px, 92%);
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: 0 18px 50px rgba(40,20,90,0.12);
+  text-align: center;
+}
+.profile-content p { margin: 6px 0; color: #5e548e; font-weight: 600; }
+.profile-content .btn {
+  display: inline-block;
+  margin: 8px 6px 0 6px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: linear-gradient(90deg,#7b2ff2,#ff61a6);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+.profile-content .close {
+  position: absolute;
+  right: 18px;
+  top: 12px;
+  font-size: 18px;
+  color: #7b2ff2;
+  cursor: pointer;
+}
+
+/* Main container & layout */
+.Hcontainer {
+  max-width: 1100px;
+  margin: 28px auto;
+  padding: 0 18px;
+}
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+/* Card */
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(123,47,242,0.06);
+}
+
+/* Title */
+.card h2 {
+  margin: 0 0 12px 0;
+  color: #7b2ff2;
+  font-size: 1.25rem;
+}
+
+/* Collector list: responsive cards in grid inside the card */
+.card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.card ul li {
+  background: linear-gradient(180deg, #e8e5e5, #dfdee1);
+  border-radius: 12px;
+  padding: 15px;
+  /* display: flex; */
+  gap: 50px;
+  align-items: center;
+  box-shadow: 0 6px 18px rgba(123,47,242,0.04);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.card ul li:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 40px rgba(123,47,242,0.10);
+}
+.collector-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  background: linear-gradient(90deg,#f3e8ff,#fff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #7b2ff2;
+  flex: 0 0 52px;
+}
+.collector-info {
+  flex: 1;
+  min-width: 0;
+}
+.collector-info b {
+  display: block;
+  color: #1e2a78;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.collector-meta {
+  color: #5e548e;
+  font-size: 0.92rem;
+  margin-top: 4px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.collector-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.collector-actions .btn {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+}
+.collector-actions .btn-view {
+  background: #fff;
+  color: #7b2ff2;
+  border: 1px solid rgba(123,47,242,0.12);
+}
+.collector-actions .btn-contact {
+  background: linear-gradient(90deg,#7b2ff2,#ff61a6);
+  color: #fff;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 18px 12px;
+  margin-top: 28px;
+  color: #7b2ff2;
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+  .card ul { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .card ul { grid-template-columns: 1fr; }
+  header h1 { font-size: 1rem; }
+  nav a { padding: 6px 8px; }
+  .collector-avatar { width: 48px; height: 48px; flex: 0 0 48px; }
+  .profile-content { width: 94%; padding: 1rem; }
+}
+
+/* small utility */
+.small-muted { color: #8a7ea8; font-size: 0.88rem; }
+
+/* =========================
+   END - Admin Collectors Styles
+   ========================= */
+
+   #messageBox {
+      margin-top: 1rem;
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      background: #fff4e6;
+      color: #b45309;
+      font-weight: 600;
+      box-shadow: 0 6px 20px rgba(123,47,242,0.03);
+    }
+    

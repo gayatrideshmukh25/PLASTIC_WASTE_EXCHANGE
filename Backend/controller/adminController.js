@@ -7,7 +7,7 @@ const conn  = require('../Utils/database');
 exports.adminDashboard = (req, resp, next) => {
     console.log("Admin Dashboard accessed");
 
-    const admin = req.session.user; // logged-in user
+    const admin = req.session.user; 
     console.log("Admin session user:", admin);
 
     if (!admin) {
@@ -16,13 +16,13 @@ exports.adminDashboard = (req, resp, next) => {
 
     const { userType } = admin;
 
-    // Check if the user is admin
+    
     if (userType !== 'admin') {
         console.log("Unauthorized access");
         return resp.json({success:false});
     }
 
-    // 1️⃣ Fetch admin details
+    
     conn.query('SELECT * FROM admin WHERE id = ?', [admin.id], (err, adminResults) => {
         if (err) {
             console.log("Database error (admin):", err);
@@ -49,7 +49,7 @@ conn.query(sql, (err, data) => {
  
 
 
-        // 2️⃣ Fetch all users
+        
         User.getAllUsers((err, userResults) => {
             if (err) {
                 console.log("Error fetching users:", err);
@@ -60,7 +60,7 @@ conn.query(sql, (err, data) => {
                 console.log("Error fetching collectors:", err);
                 return resp.status(500).json("Database error");
             }   
-              // 4️⃣ Render Dashboard Page
+              
                 resp.json( {success :true,
                     user: adminData,
                     users: userResults,
@@ -90,19 +90,17 @@ exports.Users = (req, res) => {
             return res.json({success:false});
         }
 
-        const adminData = adminResults[0];  // NOW accessible
-          console.log("Admin Data:", adminData);
-        // 🔥 Move getAllUsers *inside* the admin query callback
+        const adminData = adminResults[0];  
         User.getAllUsers((err, users) => {
             if (err) {
                 console.log("Error fetching users:", err);
                 return res.status(500).json("Database error");
             }
 
-            // 🔥 Now adminData is available here!
+            
             res.json( { success:true,
-                user: adminData,  // admin data
-                users: users      // users list
+                user: adminData,  
+                users: users      
             });
         });
     });
@@ -125,20 +123,52 @@ exports.Collectors = (req, res) => {
             return res.json({success:false});
         }
 
-        const adminData = adminResults[0];  // NOW accessible
-
-        // 🔥 Move getAllUsers *inside* the admin query callback
+        const adminData = adminResults[0];  
         Collector.getAllCollectors((err, collectors) => {
             if (err) {
                 console.log("Error fetching users:", err);
                 return res.status(500).json("Database error");
             }
 
-            // 🔥 Now adminData is available here!
+            
             res.json({ success:true,
-                user: adminData,  // admin data
-                collectors: collectors     // users list
+                user: adminData,  
+                collectors: collectors     
             });
         });
     });
 };
+
+exports.addCoupons = (req, res) => {
+    const {title, description, pointsRequired,discount} = req.body;
+    console.log(title)
+    Rewards.addCoupon(title, description, pointsRequired,discount, (err, result) => {
+        if (err) {
+            console.log("Error adding coupon:", err);
+            return res.status(500).json({ success: false, message: "Database error" });
+        }
+        res.json({ success: true, message: "Coupon added successfully" });
+    });
+
+}
+
+exports.getCoupons = (req, res) => {
+    Rewards.getAllCoupons((err, coupons) => {
+        if (err) {
+            console.log("Error fetching coupons:", err);
+            return res.status(500).json({ success: false, message: "Database error" });
+        }
+        res.json({ success: true, coupons });
+    });
+}
+
+exports.deleteCoupons = (req,res) =>{
+  const {id} = req.body;
+  Rewards.deleteCoupons(id,(err,result) => {
+    if (err) {
+            console.log("Error deleting coupon:", err);
+            return res.status(500).json({ success: false, message: "Database error" });
+        }
+        res.json({ success: true });
+  })
+}

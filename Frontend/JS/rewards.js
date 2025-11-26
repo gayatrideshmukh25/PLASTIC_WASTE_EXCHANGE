@@ -50,7 +50,7 @@ fetch("http://localhost:3000/api/userDashboard/rewards", {
       coupons.forEach(c => {
         couponDiv.innerHTML += `
           <div class="coupon-card">
-            <b>${c.name}</b>
+            <b>${c.title}</b>
             <div class="coupon-meta">${c.description}</div>
             <div class="coupon-meta">Points Required: <strong>${c.points_required}</strong></div>
             <div class="coupon-footer">
@@ -73,7 +73,7 @@ fetch("http://localhost:3000/api/userDashboard/rewards", {
         redeemedDiv.innerHTML += `
           <div class="redeemed-card">
             <div class="redeemed-left">
-              <b>${uc.name}</b>
+              <b>${uc.title}</b>
               <div class="coupon-meta">${uc.description}</div>
               <div class="coupon-meta">Code: <span class="redeemed-code">${uc.code}</span></div>
               <span class="status-badge ${uc.status === 'active' ? 'active' : 'used'}">${uc.status}</span>

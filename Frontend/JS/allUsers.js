@@ -33,14 +33,25 @@ const shortcut = document.getElementById('profile-shortcut');
           window.location.href = "/collectorDashboard.html";
           return;
        }
-        const cardUl = document.querySelector('.cardUsers ul');
-        cardUl.innerHTML = '';
-        users.forEach(c => {
+        const list = document.getElementById('users-list');
+
+      // Clear existing content
+      list.innerHTML = '';
+
+      data.users.forEach(c => {
+          // Create a list item
           const li = document.createElement('li');
-          li.innerText = `${c.name}`;
-          cardUl.appendChild(li);
-        });
+          li.innerHTML = `
+            <strong>Name:</strong> ${c.name} <br>
+            <strong>Email:</strong> ${c.email} <br>
+            <strong>Phone:</strong> ${c.phone} <br>
+           
+   
+          `;
+          list.appendChild(li);
       });
+        });
+       
       document.getElementById('logout').addEventListener('click',async() => {
  fetch("http://localhost:3000/api/logout", {
   credentials: "include"

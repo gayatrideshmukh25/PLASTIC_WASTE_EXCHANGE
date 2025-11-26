@@ -6,7 +6,7 @@ class Rewards {
   }
     static getUserCoupons(userId, callback) {
     const query = `
-          SELECT uc.id, c.name, c.description,uc.code, uc.status
+          SELECT uc.id, c.title, c.description,uc.code, uc.status
           FROM user_coupons uc
           JOIN coupons c ON uc.coupon_id = c.id
           WHERE uc.user_id = ?
@@ -14,7 +14,7 @@ class Rewards {
     conn.query(query, [userId], callback);
   }
      static redeemCoupon(userId, couponId, callback) {
-     // 1. Check if user has enough points
+     
         conn.query(
            "SELECT reward_points FROM users WHERE id = ?",
            [userId],
@@ -38,7 +38,7 @@ class Rewards {
               );
             }
              
-            // 2. Deduct points & insert coupon
+          
             conn.query(
               "UPDATE users SET reward_points = reward_points - ? WHERE id = ?",
               [requiredPoints, userId],
@@ -56,6 +56,36 @@ class Rewards {
         );
       }
     );
+  }
+    
+  static addCoupon(title, description, pointsRequired, discount, callback) {
+    const query = `
+          INSERT INTO coupons (title, description, points_required, discount)
+          VALUES (?, ?, ?, ?)
+          `;
+    conn.query(
+      query,
+      [title, description, pointsRequired, discount],
+      (err,result) => {
+        if(err){
+            console.log(err);
+            return callback(err);
+        }else{
+            return callback(null,result);
+        }
+      }
+    );
+  }  
+  static deleteCoupons(id,callback) {
+    const query = 'delete from coupons where id = ?'
+    conn.query(query,[id],(err,result) => {
+       if(err){
+            console.log(err);
+            return callback(err);
+        }else{
+            return callback(null,result);
+        }
+    })
   }
 }
 

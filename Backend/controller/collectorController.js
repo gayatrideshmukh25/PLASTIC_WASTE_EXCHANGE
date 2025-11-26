@@ -13,7 +13,7 @@ exports.collectorDashboard = (req, res, next) => {
 
     const id = collector.id;
 
-    // 1. Fetch collector data
+    
     Collector.getCollectorbyId(id, (err, collectorData) => {
         if (err) {
             console.log("DB Error:", err);

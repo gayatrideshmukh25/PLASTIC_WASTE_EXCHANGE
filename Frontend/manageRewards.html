@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="CSS/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+</head>
+<body>
+    <header>
+  <h1><img src="images/image.png" alt="Recycle" width="50"/>AdminDashboard</h1>
+
+  <nav> 
+        <a href="adminDashboard.html">Dashboard</i></a>
+        <a href="allUsers.html">Users</a>
+        <a href="allCollectors.html">Collectors</a>
+        <a href="manageRewards.html">Coupons</a>
+       
+         <span id="profile-shortcut"  title="Quick Profile">
+                <i class="fa-solid fa-user-circle" style="font-size:1.8rem; color:#7b2ff2; vertical-align:middle;"></i>
+            </span>
+  </nav>
+<div id="profile-modal" class="profile-modal">
+    <div class="profile-content">
+        <span id="close-modal" class="close">&times;</span>
+        <p id="name"></p>
+        <p id="email"></p>
+        <p id="userType"></p>
+        <a href="/profile/edit" class="btn">Edit Profile</a>
+        <a id="logout" class="btn">Logout</a>
+    </div>
+</div>  
+</header>
+    <main class="main">
+        <div class="Hcontainer">
+           <div class="dashboard-grid">
+                <div class="card">
+                    <h2>Manage Rewards</h2>
+                    <button class="btn" id="showAddCouponFormBtn"> add New Coupon</button>
+                    <form id="addCouponForm" class="hidden" style="display: none;">
+                        <h3>New Coupon Details</h3>
+                        <label for="title">Name:</label>
+                        <input type="text" id="title" name="title" placeholder="Coupon Title" required>
+                        
+                        <label for="description">Description:</label>
+                        <input type="text" id="description" name="description" placeholder="Description" required>
+                        
+                        <label for="pointsRequired">Points Required:</label>
+                        <input type="number" id="pointsRequired" name="pointsRequired" placeholder="Points Required To get This Coupon" required>
+
+                        <label for="description">Discount:</label>
+                        <input type="number" id="discount" name="discount" placeholder="Discount want to Give" required>
+                        
+                        <button type="submit" class="btn">Add Coupon</button>
+
+                    </form>
+                    <div id="messageBoxadmin" class="alert" style="display:none;"></div>
+                        <br></br>
+                        <h2>Existing Coupons</h2>
+                        <table id="coupon-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Points Required</th>
+                                    <th>Discount</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Existing coupons will be populated here -->
+                            </tbody>
+
+                        </table>
+                  
+                    
+           </div>
+        </div>
+    </main>      
+         
+
+
+<script>
+          const shortcut = document.getElementById('profile-shortcut');
+    const modal = document.getElementById('profile-modal');
+    const closeBtn = document.getElementById('close-modal');
+
+    // Show modal when clicking shortcut
+    shortcut.addEventListener('click', () => {
+        modal.style.display = 'flex';
+    });
+
+    // Close modal
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    // Close when clicking outside content
+    window.addEventListener('click', (e) => {
+        if(e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+    
+ 
+  fetch("http://localhost:3000/api/adminDashboard", {
+         credentials: "include"
+     })
+     .then(res => res.json())
+     .then(data => {
+       if (!data.success) {
+         window.location.href = "/login.html";
+         return;
+       }
+       
+       const user = data.user;
+    
+         
+
+    document.getElementById("name").innerText = `Name: ${user.name}`;
+    document.getElementById("email").innerText = `Email: ${user.email}`;
+    document.getElementById("userType").innerText = `User Type: ${user.userType}`;
+     });
+    const couponTable =  document.getElementById("coupon-table");
+    
+    fetch('http://localhost:3000/api/admin/getCoupons')
+    .then(response => response.json())
+    .then(data => {
+        const coupons = data.coupons;
+        coupons.forEach(coupon => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${coupon.title}</td>
+                <td>${coupon.description}</td>
+                <td>${coupon.points_required}</td>
+                <td>${coupon.discount}</td>
+                <td><button onclick="deleteCoupon(${coupon.id})" class="btn">Delete</button></td>
+            `;
+            couponTable.querySelector("tbody").appendChild(row);
+        });
+    })
+    .catch(error => console.error('Error fetching coupons:', error));
+
+      document.getElementById("showAddCouponFormBtn").onclick = function () {
+        const form = document.getElementById("addCouponForm");
+
+        if (form.style.display === "none") {
+            form.style.display = "block";
+            this.textContent = "❌";
+        } else {
+            form.style.display = "none";
+            this.textContent = "+ Add Reward";
+        }
+    };
+
+    document.getElementById("addCouponForm").addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const title = document.getElementById("title").value;
+        const description = document.getElementById("description").value;
+        const pointsRequired = document.getElementById("pointsRequired").value;
+        const discount = document.getElementById("discount").value;
+        
+        const response = await fetch('http://localhost:3000/api/admin/rewards/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ title, description, pointsRequired,discount })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            const messageBox = document.getElementById("messageBox");
+            messageBox.style.display = "block";
+            messageBox.textContent = data.message; 
+            document.getElementById("addCouponForm").reset();
+            document.getElementById("addCouponForm").style.display = "none";
+            document.getElementById("showAddCouponFormBtn").textContent = "+ Add Reward";
+            window.location.reload();
+        } else {
+            const messageBox = document.getElementById("messageBox");
+            messageBox.style.display = "block";
+            messageBox.textContent = data.message; 
+        }
+    });
+    function deleteCoupon(id) {
+        fetch('http://localhost:3000/api/admin/rewards/delete',{
+        method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id })
+    })
+     .then(response => response.json())
+    .then(data => {
+        if(!data.success){
+            alert("cant delete")
+        }else{
+           window.location.reload();
+        }
+    })
+
+}
+ document.getElementById('logout').addEventListener('click',async() => {
+ fetch("http://localhost:3000/api/logout", {
+  credentials: "include"
+})
+  .then(res => res.json())
+  .then(data => {
+
+    if (!data.success) {
+      alert('Cant Logout')
+      return;
+    }
+    window.location.href = data.redirectTo;
+  });   
+})
+   
+</script>
+ <footer>
+    <p>© 2025 Plastic Waste Exchange. All Rights Reserved.</p>  
+  </footer>
+</body>
+</html>

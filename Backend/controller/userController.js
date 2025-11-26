@@ -30,7 +30,7 @@ exports.sendRequest = (req,resp,next) => {
 }
 
 exports.postRequest = (req, res) => {
-   const user_id = req.session.user?.id;  // use optional chaining for safety
+   const user_id = req.session.user?.id; 
 
   if (!user_id) {
     return res.status(401).json("User not logged in");
