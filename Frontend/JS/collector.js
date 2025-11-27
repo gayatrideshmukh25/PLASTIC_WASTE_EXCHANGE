@@ -58,7 +58,7 @@
     const row = document.createElement("tr");
      row.innerHTML = `
         <td>${req.user_name}</td>
-        <td>${req.user_email}</td>
+        <td>${req.user_phone}</td>
         <td>${req.waste_type}</td>
         <td>${req.user_address}</td>
         <td>

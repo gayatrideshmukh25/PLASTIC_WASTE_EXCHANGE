@@ -84,8 +84,10 @@ exports.completedTasks =(req,resp,next) => {
 
 
 exports.completeRequest = (req,res) => {
+    const collector = req.session.user;
+    const collectorId = collector.id;
     const id = req.params.request_id;
-    console.log("Completing request ID:", id);
+    console.log("Completing request ID:", id)
     Waste.getWasteById(id, (err, waste) => {
       if (err) {
         return res.status(500).json("Database error");
@@ -93,7 +95,7 @@ exports.completeRequest = (req,res) => {
       if (!waste) {
         return res.status(404).json("Request not found");
       }
-     Waste.updateStatus(id, 'completed', (err, result) => {
+     Waste.updateStatus(id, 'completed',collectorId, (err, result) => {
       if (err) {
         console.log("Error updating status:", err);
         return res.status(500).json("Database error");

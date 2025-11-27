@@ -53,7 +53,7 @@ class Waste {
   }
   static getAllWaste(collectorId,callback) {
        const query = `
-    SELECT waste_requests.*, users.name AS user_name ,users.email AS user_email ,users.address AS user_address
+    SELECT waste_requests.*, users.name AS user_name ,users.phone_no AS user_phone ,users.address AS user_address
     FROM waste_requests
     JOIN users ON waste_requests.user_id = users.id
     WHERE waste_requests.collector_id = ?;
@@ -80,7 +80,9 @@ class Waste {
        });
       };
 
-      static  updateStatus(id, status, callback) {
+      static  updateStatus(id, status,collectorId, callback) {
+        const update = "update collector set totalcollections = totalcollections + 1 where id = ?  "
+        conn.query(update,[collectorId]);
         const sql = "UPDATE waste_requests SET status = ? WHERE request_id = ?";
           conn.query(sql, [status, id], (err, result) => {
           if (err) return callback(err);

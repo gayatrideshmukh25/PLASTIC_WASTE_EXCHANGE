@@ -1,3 +1,22 @@
+// if (navigator.geolocation) {
+//     navigator.geolocation.getCurrentPosition((pos) => {
+//       document.getElementById("latitude").value = pos.coords.latitude;
+//       document.getElementById("longitude").value = pos.coords.longitude;
+//     });
+//   }
+//   const userTypeSelect = document.getElementById('userType');
+//   const collectorFields = document.getElementById('collectorFields');
+
+//   userTypeSelect.addEventListener('change', () => {
+//     if (userTypeSelect.value === 'collector') {
+//       collectorFields.style.display = 'block';  // show extra fields
+//     } else {
+//       collectorFields.style.display = 'none';   // hide extra fields
+//     }
+//   });
+
+
+
 const userType = document.getElementById("userType");
         const collectorFields = document.getElementById("collectorFields");
         userType.addEventListener("change", () => {
@@ -9,15 +28,30 @@ const userType = document.getElementById("userType");
         const signupError = document.getElementById("signupError");
         const signupSuccess = document.getElementById("signupSuccess");
 
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            signupError.textContent = "";
+        signupError.textContent = "";
             signupSuccess.textContent = "";
 
             
             const errorFields = document.querySelectorAll(".error");
             errorFields.forEach(el => el.textContent = "");
 
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+             const address = document.getElementById("address").value;
+
+               const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
+
+                  const response = await fetch(url);
+                  const result = await response.json();
+
+                  if (result.length > 0) {
+                  document.getElementById("latitude").value = result[0].lat;
+                  document.getElementById("longitude").value = result[0].lon;
+                 } else {
+                alert("Address not found!");
+                  }
+            
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
 

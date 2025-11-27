@@ -47,7 +47,7 @@
           li.innerHTML = `
             <strong>Name:</strong> ${c.name} <br>
             <strong>Email:</strong> ${c.email} <br>
-            <strong>Phone:</strong> ${c.phone} <br>
+            <strong>Phone:</strong> ${c.phone_no} <br>
             <strong>Area:</strong> ${c.address} <br>
             <strong>Total Collections:</strong> ${c.totalCollections} <br>
             
