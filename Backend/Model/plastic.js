@@ -80,9 +80,9 @@ class Waste {
        });
       };
 
-      static  updateStatus(id, status,collectorId, callback) {
-        const update = "update collector set totalcollections = totalcollections + 1 where id = ?  "
-        conn.query(update,[collectorId]);
+      static  updateStatus(id, status, callback) {
+        // const update = "update collector set totalcollections = totalcollections + 1 where id = ?  "
+        // conn.query(update,[collectorId]);
         const sql = "UPDATE waste_requests SET status = ? WHERE request_id = ?";
           conn.query(sql, [status, id], (err, result) => {
           if (err) return callback(err);

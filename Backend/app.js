@@ -34,9 +34,9 @@ app.use(session({
 }))
 
 app.use('/api',authRouter);
-app.use('/api',userRouter)
-app.use('/api',collectorRouter)
-app.use('/api',adminRouter)
+app.use('/api',userRouter);
+app.use('/api',collectorRouter);
+app.use('/api',adminRouter);
 
 
 app.use((req, res, next) => {

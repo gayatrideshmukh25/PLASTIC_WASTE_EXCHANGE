@@ -141,7 +141,7 @@ exports.acceptRequest = (req,res) => {
 
 exports.rejectRequest = (req, res) => {
   const id = req.params.request_id;
-  Waste.updateStatus(id, 'rejected', (err) => {
+  Waste.updateStatus(id, 'cancelled', (err) => {
     if (err) console.error(err);
     res.json({success:true,redirectTo:'/collectorDashboard.html'});
   });

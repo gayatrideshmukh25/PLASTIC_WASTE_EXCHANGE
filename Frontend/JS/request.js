@@ -41,6 +41,7 @@
       locationStatus.textContent = "Fetching your location...";
 
       if (navigator.geolocation) {
+        console.log('fetching')
         navigator.geolocation.getCurrentPosition(success, error);
       } else {
         locationStatus.textContent = "Geolocation not supported.";

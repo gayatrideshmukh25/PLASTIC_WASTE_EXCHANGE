@@ -71,16 +71,30 @@
         </td>
         <td>${req.created_at || "-"}</td>
         <td>
-            ${req.status === "pending" 
-                ? `
-                    <button onclick="acceptRequest(${req.request_id})" class="btn">Accept</button>
-                    <button onclick="rejectRequest(${req.request_id})" class="btn" style="background:red;">Reject</button>
-                  `
-                : req.status === "accepted"
-                ? `<button onclick="completeRequest(${req.request_id})" class="btn" style="background:green;">Mark Completed</button>`
-                : `<span class="btn" style="background:#2ecc71;">Completed</span>`
-            }
-        </td>
+  ${
+    req.status === "pending"
+      ? `
+          <button onclick="acceptRequest(${req.request_id})" class="btn">Accept</button>
+          <button onclick="rejectRequest(${req.request_id})" class="btn" style="background:red;">Reject</button>
+        `
+      : req.status === "accepted"
+      ? `
+          <button onclick="completeRequest(${req.request_id})" class="btn" style="background:green;">
+            Mark Completed
+          </button>
+        `
+      : req.status === "completed"
+      ? `
+          <span class="btn" style="background:#2ecc71;">Completed</span>
+        `
+      : req.status === "cancelled"
+      ? `
+          <span class="btn" style="background:gray;">Cancelled</span>
+        `
+      : ""
+  }
+</td>
+
     `;
       
     table.appendChild(row);
