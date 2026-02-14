@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Profile</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="CSS/style.css" rel="stylesheet" />
+    <link href="CSS/requeststyle.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+    <style>
+      main {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding: 2rem 1rem;
+      }
+      .profile-card {
+        width: 100%;
+        max-width: 600px;
+        background: #fff;
+        border-radius: 24px;
+        box-shadow: 0 8px 32px rgba(161, 140, 209, 0.1);
+        padding: 2.5rem 2rem;
+        margin: 2rem auto;
+        transition: box-shadow 0.3s;
+      }
+      .profile-card:hover {
+        box-shadow: 0 12px 32px rgba(123, 47, 242, 0.12);
+      }
+      .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 2px solid #e0d7f7;
+      }
+      .profile-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #7b2ff2, #ff61a6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+        box-shadow: 0 4px 12px rgba(123, 47, 242, 0.16);
+      }
+      .profile-info h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: #7b2ff2;
+        font-weight: 700;
+      }
+      .profile-info p {
+        margin: 0.3rem 0 0 0;
+        color: #5e548e;
+        font-size: 0.95rem;
+      }
+      .form-section {
+        margin-bottom: 2rem;
+      }
+      .form-section h3 {
+        color: #5e548e;
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #e0d7f7;
+      }
+      form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+      label {
+        font-size: 1rem;
+        margin-bottom: 6px;
+        display: block;
+        color: #5e548e;
+        font-weight: 500;
+      }
+      input,
+      select,
+      textarea {
+        width: 90%;
+        padding: 0.9rem 1rem;
+        border: 1.5px solid #e0d7f7;
+        border-radius: 12px;
+        font-size: 1rem;
+        background: #f3e8ff;
+        color: #5e548e;
+        transition:
+          border 0.2s,
+          box-shadow 0.2s;
+        resize: none;
+      }
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border: 1.5px solid #7b2ff2;
+        outline: none;
+        background: #fff;
+        box-shadow: 0 0 0 2px #e0d7f7;
+      }
+      input:disabled {
+        background: #f0f0f0;
+        cursor: not-allowed;
+        color: #999;
+      }
+      textarea {
+        min-height: 90px;
+        resize: vertical;
+        grid-column: 1 / -1;
+      }
+      .full {
+        grid-column: 1 / -1;
+      }
+      .actions {
+        grid-column: 1 / -1;
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 1.5rem;
+      }
+      button {
+        background: #7b2ff2;
+        color: #fff;
+        border: none;
+        padding: 0.9rem 1.8rem;
+        border-radius: 25px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          box-shadow 0.2s,
+          transform 0.1s;
+        box-shadow: 0 2px 8px rgba(123, 47, 242, 0.08);
+      }
+      button:hover {
+        background: #ff61a6;
+        box-shadow: 0 4px 16px rgba(255, 97, 166, 0.16);
+        transform: translateY(-2px);
+      }
+      .btn-secondary {
+        background: #fff;
+        color: #7b2ff2;
+        border: 2px solid #7b2ff2;
+      }
+      .btn-secondary:hover {
+        background: #f3e8ff;
+        color: #ff61a6;
+        border-color: #ff61a6;
+      }
+      .msg {
+        padding: 12px;
+        border-radius: 8px;
+        text-align: center;
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+        grid-column: 1 / -1;
+        display: none;
+      }
+      .msg.success {
+        background: #e6fffa;
+        color: #065f46;
+        border-left: 4px solid #10b981;
+        display: block;
+      }
+      .msg.error {
+        background: #ffe6e6;
+        color: #9b2c2c;
+        border-left: 4px solid #ef4444;
+        display: block;
+      }
+      footer {
+        background: #fff;
+        color: #7b2ff2;
+        padding: 1.2rem 0 1rem 0;
+        text-align: center;
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+        border-top: 1px solid #e0d7f7;
+        box-shadow: 0 -2px 12px rgba(161, 140, 209, 0.06);
+        margin-top: 2rem;
+      }
+      @media (max-width: 700px) {
+        form {
+          grid-template-columns: 1fr;
+        }
+        .profile-card {
+          padding: 1.5rem 1rem;
+        }
+        .profile-header {
+          flex-direction: column;
+          text-align: center;
+        }
+        .actions {
+          flex-direction: column;
+        }
+        button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <img src="images/image.png" alt="Recycle" width="50" />Edit Profile
+      </h1>
+      <nav>
+        <a href="userDashboard.html">Dashboard</a>
+        <a href="request.html">Send Waste Request</a>
+        <a href="rewards.html">Rewards</a>
+        <span id="profile-shortcut" title="Quick Profile">
+          <i
+            class="fa-solid fa-user-circle"
+            style="font-size: 1.8rem; color: #7b2ff2; vertical-align: middle"
+          ></i>
+        </span>
+      </nav>
+      <div id="profile-modal" class="profile-modal">
+        <div class="profile-content">
+          <span id="close-modal" class="close">&times;</span>
+          <h2>User Profile</h2>
+          <p id="modalname"></p>
+          <p id="modalemail"></p>
+          <p id="userType"></p>
+          <a href="editProfile.html" class="btn">Edit Profile</a>
+          <a id="logout" class="btn">Logout</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-avatar">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div class="profile-info">
+            <h2 id="displayName">User Name</h2>
+            <p id="displayEmail">user@example.com</p>
+          </div>
+        </div>
+
+        <form id="editForm">
+          <div id="message" class="msg"></div>
+
+          <div class="form-section full">
+            <h3>Personal Information</h3>
+          </div>
+
+          <div>
+            <label for="name"
+              >Full Name <span style="color: #ff61a6">*</span></label
+            >
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Enter your full name"
+              required
+            />
+          </div>
+
+          <div>
+            <label for="phone">Phone Number</label>
+            <input
+              type="tel"
+              id="phone_no"
+              name="phone_no"
+              placeholder="Enter your phone number"
+            />
+          </div>
+
+          <div class="full">
+            <label for="email"
+              >Email Address
+              <span style="color: #999">(Cannot change)</span></label
+            >
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Your email"
+              disabled
+            />
+          </div>
+
+          <div class="full">
+            <label for="address">Address</label>
+            <textarea
+              id="address"
+              name="address"
+              placeholder="Enter your complete address"
+            ></textarea>
+          </div>
+          <div class="full">
+            <label for="userType">userType</label>
+            <input
+              type="hidden"
+              id="userType"
+              name="userType"
+              placeholder="Enter your complete address"
+            ></input>
+          </div>
+
+          <div>
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" placeholder="City" />
+          </div>
+
+          <div>
+            <label for="state">State</label>
+            <input
+              type="text"
+              id="state"
+              name="state"
+              placeholder="State/Province"
+            />
+          </div>
+
+          <div class="full actions">
+            <button type="submit" class="btn">Save Changes</button>
+            <button
+              type="button"
+              class="btn-secondary"
+              onclick="window.history.back()"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <footer>
+      <p>© 2025 Plastic Waste Exchange. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+      let currentUserType = null;
+
+      // Profile Modal Logic
+      const profileShortcut = document.getElementById("profile-shortcut");
+      const profileModal = document.getElementById("profile-modal");
+      const closeModal = document.getElementById("close-modal");
+      const logoutBtn = document.getElementById("logout");
+
+      profileShortcut?.addEventListener("click", () => {
+        profileModal.style.display =
+          profileModal.style.display === "block" ? "none" : "block";
+      });
+
+      closeModal?.addEventListener("click", () => {
+        profileModal.style.display = "none";
+      });
+
+      window.addEventListener("click", (e) => {
+        if (e.target === profileModal) {
+          profileModal.style.display = "none";
+        }
+      });
+
+      logoutBtn?.addEventListener("click", () => {
+        fetch("http://localhost:3000/logout", { credentials: "include" }).then(
+          () => {
+            window.location.href = "/login.html";
+          },
+        );
+      });
+
+      // Load User Profile Data
+      function loadUserProfile() {
+        fetch("http://localhost:3000/api/getUserProfile", {
+          credentials: "include",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success && data.user) {
+              const user = data.user;
+              currentUserType = user.userType;
+              console.log("Loaded user profile:", user);
+              document.getElementById("displayName").textContent =
+                user.name || "User";
+              document.getElementById("displayEmail").textContent =
+                user.email || "user@example.com";
+              document.getElementById("name").value = user.name || "";
+              document.getElementById("email").value = user.email || "";
+              document.getElementById("userType").value = user.userType || "";
+              document.getElementById("phone_no").value = user.phone_no || "";
+              document.getElementById("address").value = user.address || "";
+              document.getElementById("city").value = user.city || "";
+              document.getElementById("state").value = user.state || "";
+
+              // Show/hide fields based on user type
+              updateFormFields(user.userType);
+            }
+          })
+          .catch((err) => {
+            console.error("Error loading profile:", err);
+            showMessage("Error loading profile. Please try again.", "error");
+          });
+      }
+
+      // Update form fields visibility based on user type
+      function updateFormFields(userType) {
+        const cityField = document.getElementById("city")?.parentElement;
+        const stateField = document.getElementById("state")?.parentElement;
+
+        if (userType === "user") {
+          // Hide city and state for regular users
+          if (cityField) cityField.style.display = "none";
+          if (stateField) stateField.style.display = "none";
+        } else if (userType === "collector") {
+          // Show city and state for collectors
+          if (cityField) cityField.style.display = "block";
+          if (stateField) stateField.style.display = "block";
+        } else if (userType === "admin") {
+          // Show all fields for admin
+          if (cityField) cityField.style.display = "block";
+          if (stateField) stateField.style.display = "block";
+        }
+      }
+
+      // Show Message
+      function showMessage(text, type) {
+        const messageDiv = document.getElementById("message");
+        messageDiv.textContent = text;
+        messageDiv.className = `msg ${type}`;
+        setTimeout(() => {
+          messageDiv.className = "msg";
+        }, 5000);
+      }
+
+      // Get redirect URL based on user type
+      function getRedirectUrl(userType) {
+        switch (userType) {
+          case "user":
+            return "userDashboard.html";
+          case "collector":
+            return "collectorDashboard.html";
+          case "admin":
+            return "adminDashboard.html";
+          default:
+            return "userDashboard.html";
+        }
+      }
+
+      // Handle Form Submission
+      document.getElementById("editForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        // Build form data based on user type
+        let formData = {
+          name: document.getElementById("name").value,
+          phone_no: document.getElementById("phone_no").value,
+          address: document.getElementById("address").value,
+        };
+
+        // Add city and state for collectors and admin
+        if (currentUserType === "collector" ) {
+          formData.city = document.getElementById("city").value;
+          formData.state = document.getElementById("state").value;
+        }
+
+        fetch("http://localhost:3000/api/editProfile", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(formData),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              showMessage("Profile updated successfully!", "success");
+              const redirectUrl = getRedirectUrl(currentUserType);
+              setTimeout(() => {
+                window.location.href = redirectUrl;
+              }, 1500);
+            } else {
+              showMessage(
+                data.message || "Failed to update profile. Please try again.",
+                "error",
+              );
+            }
+          })
+          .catch((err) => {
+            console.error("Error:", err);
+            showMessage("Error updating profile. Please try again.", "error");
+          });
+      });
+
+      // Load profile on page load
+      loadUserProfile();
+    </script>
+  </body>
+</html>

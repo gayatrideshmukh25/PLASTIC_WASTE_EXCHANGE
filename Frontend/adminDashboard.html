@@ -19,6 +19,7 @@
         <a href="allUsers.html">Users</a>
         <a href="allCollectors.html">Collectors</a>
         <a href="manageRewards.html">Coupons</a>
+        <a href="feedback.html">Feedback</a>
        
          <span id="profile-shortcut"  title="Quick Profile">
                 <i class="fa-solid fa-user-circle" style="font-size:1.8rem; color:#7b2ff2; vertical-align:middle;"></i>
@@ -30,8 +31,8 @@
         <p id="name"></p>
         <p id="email"></p>
         <p id="userType"></p>
-        <a href="/profile/edit" class="btn">Edit Profile</a>
         <a id="logout" class="btn">Logout</a>
+        <a href="editProfile.html" class="btn">Edit Profile</a>
     </div>
 </div>  
 </header>
@@ -56,6 +57,19 @@
           <div class="card-value" id="redeemed"></div>
         </div>
       </section>
+     <section class="charts">
+    <div class="chart-card">
+        <h2>Monthly Waste Collection (kg)</h2>
+        <canvas id="wasteChart" width="400" height="200"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h2>Request Status Overview</h2>
+        <canvas id="statusChart" width="400" height="159"></canvas>
+    </div>
+</section>
+
+
         </div>
      </div>
     </main>

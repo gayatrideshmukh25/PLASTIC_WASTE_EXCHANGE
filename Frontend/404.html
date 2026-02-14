@@ -1,68 +1,78 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>404 - Page Not Found</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
-            font-family: 'Inter', sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+        font-family: "Inter", sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .notfound-container {
+        background: #fff;
+        border-radius: 24px;
+        box-shadow: 0 8px 32px rgba(161, 140, 209, 0.1);
+        padding: 3rem 2.5rem 2.5rem 2.5rem;
+        text-align: center;
+        max-width: 400px;
+        animation: fadeIn 0.7s;
+      }
+      .notfound-container h1 {
+        font-size: 4rem;
+        color: #7b2ff2;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+      }
+      .notfound-container p {
+        color: #5e548e;
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+      }
+      .notfound-container a {
+        display: inline-block;
+        background: #7b2ff2;
+        color: #fff;
+        padding: 0.7rem 2rem;
+        border-radius: 25px;
+        font-weight: 600;
+        text-decoration: none;
+        font-size: 1rem;
+        transition:
+          background 0.2s,
+          box-shadow 0.2s;
+        box-shadow: 0 2px 8px rgba(123, 47, 242, 0.08);
+      }
+      .notfound-container a:hover {
+        background: #ff61a6;
+        box-shadow: 0 4px 16px rgba(255, 97, 166, 0.16);
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
         }
-        .notfound-container {
-            background: #fff;
-            border-radius: 24px;
-            box-shadow: 0 8px 32px rgba(161,140,209,0.10);
-            padding: 3rem 2.5rem 2.5rem 2.5rem;
-            text-align: center;
-            max-width: 400px;
-            animation: fadeIn 0.7s;
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
-        .notfound-container h1 {
-            font-size: 4rem;
-            color: #7b2ff2;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
-        .notfound-container p {
-            color: #5e548e;
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-        }
-        .notfound-container a {
-            display: inline-block;
-            background: #7b2ff2;
-            color: #fff;
-            padding: 0.7rem 2rem;
-            border-radius: 25px;
-            font-weight: 600;
-            text-decoration: none;
-            font-size: 1rem;
-            transition: background 0.2s, box-shadow 0.2s;
-            box-shadow: 0 2px 8px rgba(123,47,242,0.08);
-        }
-        .notfound-container a:hover {
-            background: #ff61a6;
-            box-shadow: 0 4px 16px rgba(255,97,166,0.16);
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-30px);}
-            to { opacity: 1; transform: translateY(0);}
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="notfound-container">
-        <h1>404</h1>
-        <p>Oops! The page you are looking for does not exist.</p>
-        <a href="home.html">Go Home</a>
+      <h1>404</h1>
+      <p>Oops! The page you are looking for does not exist.</p>
+      <a href="/home.html">Go Home</a>
     </div>
-   
-</body>
+  </body>
 </html>
