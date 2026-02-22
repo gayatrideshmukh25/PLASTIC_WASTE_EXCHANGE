@@ -6,8 +6,8 @@ const conn = require("../Utils/database");
 
 exports.userDashboard = (req, resp, next) => {
   try {
-    const user = req.session.user;
-
+    const user = req.user;
+    console.log("inside user");
     if (!user || !user.id) {
       return resp
         .status(401)
@@ -15,16 +15,15 @@ exports.userDashboard = (req, resp, next) => {
     }
 
     const { id } = user;
+    console.log("User ID from token:", id);
 
     User.getUserbyId(id, (err, userData) => {
       if (err) {
         console.error("Error fetching user:", err);
-        return resp
-          .status(500)
-          .json({
-            success: false,
-            message: "Database error while fetching user",
-          });
+        return resp.status(500).json({
+          success: false,
+          message: "Database error while fetching user",
+        });
       }
 
       if (!userData) {
@@ -43,12 +42,10 @@ exports.userDashboard = (req, resp, next) => {
       Waste.getRequestbyUser(id, (err, wasteLogged) => {
         if (err) {
           console.error("Error fetching waste requests:", err);
-          return resp
-            .status(500)
-            .json({
-              success: false,
-              message: "Database error while fetching requests",
-            });
+          return resp.status(500).json({
+            success: false,
+            message: "Database error while fetching requests",
+          });
         }
 
         resp.json({
@@ -66,7 +63,7 @@ exports.userDashboard = (req, resp, next) => {
 
 exports.sendRequest = (req, resp, next) => {
   try {
-    const user = req.session.user;
+    const user = req.user;
 
     if (!user || !user.id) {
       return resp
@@ -100,7 +97,7 @@ exports.sendRequest = (req, resp, next) => {
 
 exports.postRequest = (req, res) => {
   try {
-    const user_id = req.session.user?.id;
+    const user_id = req.user?.id;
 
     if (!user_id) {
       return res
@@ -183,12 +180,10 @@ exports.nearestCollector = (req, res) => {
     const userLng = parseFloat(req.query.lng);
 
     if (isNaN(userLat) || isNaN(userLng)) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          error: "Valid latitude and longitude are required",
-        });
+      return res.status(400).json({
+        success: false,
+        error: "Valid latitude and longitude are required",
+      });
     }
 
     conn.query(
@@ -245,8 +240,8 @@ exports.nearestCollector = (req, res) => {
 
 exports.rewards = (req, res) => {
   try {
-    const user = req.session.user;
-
+    const user = req.user;
+    console.log("inside rewards");
     if (!user || !user.id) {
       return res
         .status(401)
@@ -310,7 +305,7 @@ exports.rewards = (req, res) => {
 
 exports.redeemCoupon = (req, res) => {
   try {
-    const user = req.session.user;
+    const user = req.user;
 
     if (!user || !user.id) {
       return res
@@ -343,12 +338,10 @@ exports.redeemCoupon = (req, res) => {
           Rewards.getUserCoupons(userId, (errUserCoupons, userCoupons) => {
             if (errUserCoupons) {
               console.error("Error fetching user coupons:", errUserCoupons);
-              return res
-                .status(500)
-                .json({
-                  success: false,
-                  message: "Error fetching user coupons",
-                });
+              return res.status(500).json({
+                success: false,
+                message: "Error fetching user coupons",
+              });
             }
 
             return res.json({
@@ -417,7 +410,7 @@ exports.applyCoupon = (req, res) => {
   try {
     console.log("Apply Coupon Request Body:", req.body);
     const { product_id, price, coupon_code } = req.body;
-    const userId = req.session.user?.id;
+    const userId = req.user?.id;
 
     if (!userId) {
       return res
@@ -426,12 +419,10 @@ exports.applyCoupon = (req, res) => {
     }
 
     if (!coupon_code || !price) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Coupon code and price are required",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Coupon code and price are required",
+      });
     }
 
     const sql = `
@@ -502,12 +493,10 @@ exports.checkout = (req, res) => {
       req.body;
 
     if (!productId || finalPrice === undefined) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Product ID and final price are required",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Product ID and final price are required",
+      });
     }
 
     req.session.checkoutData = {
@@ -551,8 +540,8 @@ exports.checkoutData = (req, res) => {
   }
 };
 exports.userProfile = (req, res) => {
-  const userId = req.session.user?.id;
-  const userType = req.session.user?.userType;
+  const userId = req.user?.id;
+  const userType = req.user?.userType;
 
   if (!userId) {
     return res.status(401).json({ success: false, message: "Not logged in" });
@@ -604,8 +593,8 @@ exports.userProfile = (req, res) => {
 };
 
 exports.editProfile = (req, res) => {
-  const userId = req.session.user?.id;
-  const userType = req.session.user?.userType;
+  const userId = req.user?.id;
+  const userType = req.user?.userType;
   const { name, phone_no, address, city, state } = req.body;
 
   if (!userId) {

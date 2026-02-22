@@ -8,8 +8,13 @@ exports.adminDashboard = (req, resp, next) => {
   try {
     console.log("Admin Dashboard accessed");
 
-    const admin = req.session.user;
-
+    const admin = req.user;
+    // const token = req.cokies.token;
+    // if(!token){
+    //   return resp.status(401).json({ success: false, message: "No token provided" });
+    // }
+    // const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // req.user = decoded;
     if (!admin || !admin.id) {
       return resp
         .status(401)
@@ -150,7 +155,7 @@ SELECT
 
 exports.Users = (req, res) => {
   try {
-    const admin = req.session.user;
+    const admin = req.user;
 
     if (!admin || !admin.id) {
       return res
@@ -200,7 +205,7 @@ exports.Users = (req, res) => {
 
 exports.Collectors = (req, res) => {
   try {
-    const admin = req.session.user;
+    const admin = req.user;
 
     if (!admin || !admin.id) {
       return res

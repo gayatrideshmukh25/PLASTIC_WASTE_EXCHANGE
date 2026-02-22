@@ -4,7 +4,7 @@ const Collector = require("../Model/Collector");
 
 exports.collectorDashboard = (req, res, next) => {
   try {
-    const collector = req.session.user;
+    const collector = req.user;
 
     if (!collector || !collector.id) {
       return res
@@ -63,7 +63,7 @@ exports.collectorDashboard = (req, res, next) => {
 
 exports.pendingTasks = (req, resp, next) => {
   try {
-    const user = req.session.user;
+    const user = req.user;
 
     if (!user || !user.id) {
       return resp
@@ -117,7 +117,7 @@ exports.pendingTasks = (req, resp, next) => {
 
 exports.completedTasks = (req, resp, next) => {
   try {
-    const user = req.session.user;
+    const user = req.user;
 
     if (!user || !user.id) {
       return resp
@@ -171,7 +171,7 @@ exports.completedTasks = (req, resp, next) => {
 
 exports.completeRequest = (req, res) => {
   try {
-    const collector = req.session.user;
+    const collector = req.user;
 
     if (!collector || !collector.id) {
       return res

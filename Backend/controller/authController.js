@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const User = require("../Model/Home");
 const Collector = require("../Model/Collector");
 const Waste = require("../Model/plastic");
+const jwt = require("jsonwebtoken");
 const { validationResult, check } = require("express-validator");
 
 exports.postlogin = [
@@ -90,32 +91,39 @@ exports.postlogin = [
           oldInput: { email },
         });
       }
-
-      req.session.user = { id: userData.id, userType: userData.userType };
-      req.session.save((err) => {
-        if (err) {
-          console.error("Error saving session:", err);
-          return res
-            .status(500)
-            .json({ success: false, errorMessage: "Error saving session" });
-        }
-
-        if (userType == "user") {
-          return res.json({ success: true, redirectTo: "/userDashboard.html" });
-        }
-        if (userType == "collector") {
-          return res.json({
-            success: true,
-            redirectTo: "/collectorDashboard.html",
-          });
-        }
-        if (userType == "admin") {
-          return res.json({
-            success: true,
-            redirectTo: "/adminDashboard.html",
-          });
-        }
+      const token = jwt.sign(
+        { id: userData.id, userType: userData.userType },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" },
+      );
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: false,
       });
+      // req.session.user = { id: userData.id, userType: userData.userType };
+      // req.session.save((err) => {
+      //   if (err) {
+      //     console.error("Error saving session:", err);
+      //     return res
+      //       .status(500)
+      //       .json({ success: false, errorMessage: "Error saving session" });
+      //   }
+
+      if (userType == "user") {
+        return res.json({ success: true, redirectTo: "/userDashboard.html" });
+      }
+      if (userType == "collector") {
+        return res.json({
+          success: true,
+          redirectTo: "/collectorDashboard.html",
+        });
+      }
+      if (userType == "admin") {
+        return res.json({
+          success: true,
+          redirectTo: "/adminDashboard.html",
+        });
+      }
     } catch (error) {
       console.error("Login error:", error);
       return res.status(500).json({
@@ -258,27 +266,36 @@ exports.postsignup = [
 
 exports.logout = (req, resp, next) => {
   try {
-    if (!req.session) {
-      return resp
-        .status(400)
-        .json({ success: false, message: "No active session" });
-    }
-
-    req.session.destroy((err) => {
-      if (err) {
-        console.error("Error destroying session:", err);
-        return resp
-          .status(500)
-          .json({ success: false, message: "Error logging out" });
-      }
-
-      resp.clearCookie("session_cookie_name");
-      resp.json({
-        success: true,
-        message: "Logged out successfully",
-        redirectTo: "login.html",
-      });
+    // if (!req.session) {
+    //   return resp
+    //     .status(400)
+    //     .json({ success: false, message: "No active session" });
+    // }
+    resp.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // only send over HTTPS in prod
+      sameSite: "Strict",
     });
+    resp.json({
+      success: true,
+      message: "Logged out successfully",
+      redirectTo: "login.html",
+    });
+    // req.session.destroy((err) => {
+    //   if (err) {
+    //     console.error("Error destroying session:", err);
+    //     return resp
+    //       .status(500)
+    //       .json({ success: false, message: "Error logging out" });
+    //   }
+
+    //   resp.clearCookie("session_cookie_name");
+    //   resp.json({
+    //     success: true,
+    //     message: "Logged out successfully",
+    //     redirectTo: "login.html",
+    //   });
+    // });
   } catch (error) {
     console.error("Error in logout:", error);
     resp.status(500).json({ success: false, message: "Internal server error" });
