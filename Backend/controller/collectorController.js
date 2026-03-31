@@ -56,8 +56,9 @@ exports.collectorDashboard = (req, res, next) => {
       });
     });
   } catch (error) {
-    console.error("Error in collectorDashboard:", error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    next(error);
+    // console.error("Error in collectorDashboard:", error);
+    // res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -110,8 +111,9 @@ exports.pendingTasks = (req, resp, next) => {
       });
     });
   } catch (error) {
-    console.error("Error in pendingTasks:", error);
-    resp.status(500).json({ success: false, message: "Internal server error" });
+    next(error);
+    // console.error("Error in pendingTasks:", error);
+    // resp.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -164,8 +166,9 @@ exports.completedTasks = (req, resp, next) => {
       });
     });
   } catch (error) {
-    console.error("Error in completedTasks:", error);
-    resp.status(500).json({ success: false, message: "Internal server error" });
+    next(error);
+    // console.error("Error in completedTasks:", error);
+    // resp.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -256,8 +259,9 @@ exports.completeRequest = (req, res) => {
       });
     });
   } catch (error) {
-    console.error("Error in completeRequest:", error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    next(error);
+    // console.error("Error in completeRequest:", error);
+    // res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -286,8 +290,9 @@ exports.acceptRequest = (req, res) => {
       });
     });
   } catch (error) {
-    console.error("Error in acceptRequest:", error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    next(error);
+    // console.error("Error in acceptRequest:", error);
+    // res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -316,7 +321,8 @@ exports.rejectRequest = (req, res) => {
       });
     });
   } catch (error) {
-    console.error("Error in rejectRequest:", error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    next(error);
+    // console.error("Error in rejectRequest:", error);
+    // res.status(500).json({ success: false, message: "Internal server error" });
   }
 };

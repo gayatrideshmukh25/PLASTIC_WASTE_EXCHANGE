@@ -3,6 +3,7 @@ const User = require("../Model/Home");
 const Collector = require("../Model/Collector");
 const Rewards = require("../Model/Rewards");
 const conn = require("../Utils/database");
+const { getDistance } = require("../Utils/distance");
 
 exports.userDashboard = (req, resp, next) => {
   try {
@@ -56,8 +57,9 @@ exports.userDashboard = (req, resp, next) => {
       });
     });
   } catch (error) {
-    console.error("Error in userDashboard:", error);
-    resp.status(500).json({ success: false, message: "Internal server error" });
+    next(error);
+    // console.error("Error in userDashboard:", error);
+    // resp.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -90,8 +92,9 @@ exports.sendRequest = (req, resp, next) => {
       resp.json({ success: true, user: userData });
     });
   } catch (error) {
-    console.error("Error in sendRequest:", error);
-    resp.status(500).json({ success: false, message: "Internal server error" });
+    next(error);
+    // console.error("Error in sendRequest:", error);
+    // resp.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -153,28 +156,29 @@ exports.postRequest = (req, res) => {
       message: "Waste Pickup Request Sent Successfully!",
     });
   } catch (error) {
-    console.error("Error in postRequest:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Error creating waste request" });
+    next(error);
+    // console.error("Error in postRequest:", error);
+    // res
+    //   .status(500)
+    //   .json({ success: false, message: "Error creating waste request" });
   }
 };
 
-function getDistance(lat1, lon1, lat2, lon2) {
-  const R = 6371; // km
-  const dLat = ((lat2 - lat1) * Math.PI) / 180;
-  const dLon = ((lon2 - lon1) * Math.PI) / 180;
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
-}
+// function getDistance(lat1, lon1, lat2, lon2) {
+//   const R = 6371; // km
+//   const dLat = ((lat2 - lat1) * Math.PI) / 180;
+//   const dLon = ((lon2 - lon1) * Math.PI) / 180;
+//   const a =
+//     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+//     Math.cos((lat1 * Math.PI) / 180) *
+//       Math.cos((lat2 * Math.PI) / 180) *
+//       Math.sin(dLon / 2) *
+//       Math.sin(dLon / 2);
+//   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+//   return R * c;
+// }
 
-exports.nearestCollector = (req, res) => {
+exports.nearestCollector = (req, res, next) => {
   try {
     const userLat = parseFloat(req.query.lat);
     const userLng = parseFloat(req.query.lng);
@@ -233,8 +237,9 @@ exports.nearestCollector = (req, res) => {
       },
     );
   } catch (error) {
-    console.error("Error in nearestCollector:", error);
-    res.status(500).json({ success: false, error: "Internal server error" });
+    next(error);
+    // console.error("Error in nearestCollector:", error);
+    // res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
 
@@ -298,8 +303,9 @@ exports.rewards = (req, res) => {
       });
     });
   } catch (error) {
-    console.error("Error in rewards:", error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    next(error);
+    // console.error("Error in rewards:", error);
+    // res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 

@@ -9,12 +9,6 @@ exports.adminDashboard = (req, resp, next) => {
     console.log("Admin Dashboard accessed");
 
     const admin = req.user;
-    // const token = req.cokies.token;
-    // if(!token){
-    //   return resp.status(401).json({ success: false, message: "No token provided" });
-    // }
-    // const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    // req.user = decoded;
     if (!admin || !admin.id) {
       return resp
         .status(401)
@@ -148,8 +142,9 @@ SELECT
       },
     );
   } catch (error) {
-    console.error("Error in adminDashboard:", error);
-    resp.status(500).json({ success: false, message: "Internal server error" });
+    next(error);
+    // console.error("Error in adminDashboard:", error);
+    // resp.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -198,8 +193,9 @@ exports.Users = (req, res) => {
       },
     );
   } catch (error) {
-    console.error("Error in Users:", error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    next(error);
+    // console.error("Error in Users:", error);
+    // res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -250,8 +246,9 @@ exports.Collectors = (req, res) => {
       },
     );
   } catch (error) {
-    console.error("Error in Collectors:", error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    next(error);
+    // console.error("Error in Collectors:", error);
+    // res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -300,8 +297,9 @@ exports.addCoupons = (req, res) => {
       },
     );
   } catch (error) {
-    console.error("Error in addCoupons:", error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    next(error);
+    // console.error("Error in addCoupons:", error);
+    // res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -318,8 +316,9 @@ exports.getCoupons = (req, res) => {
       res.json({ success: true, coupons: coupons || [] });
     });
   } catch (error) {
-    console.error("Error in getCoupons:", error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    next(error);
+    // console.error("Error in getCoupons:", error);
+    // res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -344,7 +343,8 @@ exports.deleteCoupons = (req, res) => {
       res.json({ success: true, message: "Coupon deleted successfully" });
     });
   } catch (error) {
-    console.error("Error in deleteCoupons:", error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    next(error);
+    // console.error("Error in deleteCoupons:", error);
+    // res.status(500).json({ success: false, message: "Internal server error" });
   }
 };

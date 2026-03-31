@@ -125,11 +125,12 @@ exports.postlogin = [
         });
       }
     } catch (error) {
-      console.error("Login error:", error);
-      return res.status(500).json({
-        success: false,
-        errorMessage: error.message || "Internal server error",
-      });
+      next(error);
+      // console.error("Login error:", error);
+      // return res.status(500).json({
+      //   success: false,
+      //   errorMessage: error.message || "Internal server error",
+      // });
     }
   },
 ];
@@ -259,7 +260,8 @@ exports.postsignup = [
           message: "Email already registered",
         });
       }
-      res.status(500).json({ success: false, message: err.message });
+      next(err);
+      // res.status(500).json({ success: false, message: err.message });
     }
   },
 ];
@@ -297,7 +299,8 @@ exports.logout = (req, resp, next) => {
     //   });
     // });
   } catch (error) {
-    console.error("Error in logout:", error);
-    resp.status(500).json({ success: false, message: "Internal server error" });
+    next(error);
+    // console.error("Error in logout:", error);
+    // resp.status(500).json({ success: false, message: "Internal server error" });
   }
 };

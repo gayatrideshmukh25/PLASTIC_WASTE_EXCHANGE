@@ -11,6 +11,7 @@ const authRouter = require("./Routes/authRouter");
 const collectorRouter = require("./Routes/collectorRouter");
 const userRouter = require("./Routes/userRouter");
 const adminRouter = require("./Routes/adminRouter");
+const { errorHandler } = require("./middleware/errorHandler");
 require("dotenv").config();
 const cors = require("cors");
 app.use(cors());
@@ -41,7 +42,9 @@ app.use("/api", adminRouter);
 
 app.use((req, res, next) => {
   res.status(404).sendFile(path.join(__dirname, "../frontend/404.html"));
+  next();
 });
+app.use(errorHandler);
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something broke!");

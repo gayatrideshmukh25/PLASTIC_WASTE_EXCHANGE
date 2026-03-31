@@ -12,26 +12,7 @@ const {
 } = require("../controller/collectorController");
 
 const { editProfile, userProfile } = require("../controller/userController");
-
-const authenticateJWT = (req, res, next) => {
-  const token =
-    req.cookies?.token || req.headers["authorization"]?.split(" ")[1];
-
-  if (!token) {
-    return res
-      .status(401)
-      .json({ success: false, message: "No token provided" });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // attach user info to req
-    next();
-  } catch (err) {
-    console.error("JWT verification failed:", err);
-    return res.status(401).json({ success: false, message: "Invalid token" });
-  }
-};
+const { verifyToken } = require("../middleware/auth");
 
 function isAuthenticated(req, res, next) {
   if (req.cookies && req.cookies.token) {
@@ -42,50 +23,45 @@ function isAuthenticated(req, res, next) {
 
 collectorRouter.get(
   "/collectorDashboard",
-  authenticateJWT,
+  verifyToken,
   isAuthenticated,
   collectorDashboard,
 );
 collectorRouter.get(
   "/collectorDashboard/pendingTasks",
-  authenticateJWT,
+  verifyToken,
   isAuthenticated,
   pendingTasks,
 );
 collectorRouter.get(
   "/collectorDashboard/completedTasks",
-  authenticateJWT,
+  verifyToken,
   isAuthenticated,
   completedTasks,
 );
 collectorRouter.get(
   "/collectorDashboard/accept/:request_id",
-  authenticateJWT,
+  verifyToken,
   isAuthenticated,
   acceptRequest,
 );
 collectorRouter.get(
   "/collectorDashboard/reject/:request_id",
-  authenticateJWT,
+  verifyToken,
   isAuthenticated,
   rejectRequest,
 );
 collectorRouter.get(
   "/collectorDashboard/complete/:request_id",
-  authenticateJWT,
+  verifyToken,
   completeRequest,
 );
 collectorRouter.get(
   "/getUserProfile",
-  authenticateJWT,
+  verifyToken,
   isAuthenticated,
   userProfile,
 );
-collectorRouter.post(
-  "/editProfile",
-  authenticateJWT,
-  isAuthenticated,
-  editProfile,
-);
+collectorRouter.post("/editProfile", verifyToken, isAuthenticated, editProfile);
 
 module.exports = collectorRouter;
