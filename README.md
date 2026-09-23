@@ -4,7 +4,7 @@ A platform to connect users with nearby waste collectors, earn reward points for
 
 # Tech Stack
 
-Frontend: HTML, CSS, JavaScript
+Frontend: React.js
 
 Backend: Node.js, Express.js
 
