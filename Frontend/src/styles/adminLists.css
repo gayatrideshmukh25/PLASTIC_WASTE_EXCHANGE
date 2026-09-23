@@ -1,0 +1,23 @@
+/* Admin "All Users" / "All Collectors" card lists.
+   These were inline <style> blocks keyed on #users-list / #collector-list.
+   `ul.people-list` keeps the specificity high enough to beat `.card ul li` in global.css,
+   exactly like the original id selectors did. */
+.card ul.people-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 22px;
+}
+
+.card ul.people-list li {
+  width: 300px;
+  padding: 20px 25px;
+  border-radius: 16px;
+  background: #ffffff;
+  border-left: 8px solid #7c3aed;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-align: left;
+}

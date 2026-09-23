@@ -1,0 +1,151 @@
+/* Rewards (inline <style> from rewards.html)
+   Scoped with :where(.page-rewards) (zero specificity) so it cannot leak onto other pages. */
+
+:where(.page-rewards) .messageBox {
+  color: #b45309;
+}
+
+:where(.page-rewards) .points-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: linear-gradient(90deg, #fff, #c27df0);
+  border-radius: 14px;
+  padding: 0.9rem 1rem;
+  box-shadow: 0 6px 20px rgba(123, 47, 242, 0.06);
+  margin: 0.75rem 0 1.25rem 0;
+  font-weight: 700;
+  color: #1e2a78;
+  font-size: 1.05rem;
+}
+
+:where(.page-rewards) .points-box .points-number {
+  background: linear-gradient(90deg, #7b2ff2, #ff61a6);
+  color: #fff;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-size: 1rem;
+  box-shadow: 0 6px 20px rgba(123, 47, 242, 0.12);
+}
+
+:where(.page-rewards) .coupon-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+:where(.page-rewards) .coupon-card {
+  background: linear-gradient(180deg, #fff, #f69ace);
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: 0 8px 28px rgba(161, 140, 209, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+:where(.page-rewards) .coupon-card b {
+  color: #7b2ff2;
+  font-size: 1.05rem;
+}
+
+:where(.page-rewards) .coupon-meta {
+  color: #5e548e;
+  font-size: 0.95rem;
+}
+
+:where(.page-rewards) .coupon-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+:where(.page-rewards) .coupon-footer form {
+  margin: 0;
+}
+
+:where(.page-rewards) .coupon-footer .btn {
+  padding: 0.45rem 0.8rem;
+  font-size: 0.95rem;
+  border-radius: 10px;
+}
+
+:where(.page-rewards) .alert {
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  background: #fff4e6;
+  color: #b45309;
+  font-weight: 600;
+  box-shadow: 0 6px 20px rgba(123, 47, 242, 0.03);
+}
+
+:where(.page-rewards) .redeemed-list {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9rem;
+}
+
+:where(.page-rewards) .redeemed-card {
+  background: linear-gradient(180deg, #fff, #efbfbf);
+  border-radius: 12px;
+  padding: 0.9rem;
+  box-shadow: 0 6px 20px rgba(41, 2, 131, 0.04);
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+:where(.page-rewards) .redeemed-left {
+  flex: 1;
+  min-width: 0;
+}
+
+:where(.page-rewards) .redeemed-left b {
+  color: #7b2ff2;
+  display: block;
+}
+
+:where(.page-rewards) .redeemed-code {
+  font-weight: 700;
+  color: #1e2a78;
+}
+
+:where(.page-rewards) .status-badge {
+  margin-top: 0.45rem;
+  display: inline-block;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+:where(.page-rewards) .status-badge.active {
+  background: #e8fff3;
+  color: #065f46;
+  border: 1px solid #c6f6e8;
+}
+
+:where(.page-rewards) .status-badge.used {
+  background: #e8f0ff;
+  color: #1e40af;
+  border: 1px solid #cfe0ff;
+}
+
+@media (max-width: 900px) {
+  :where(.page-rewards) .coupon-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  :where(.page-rewards) .redeemed-list {
+    grid-template-columns: 1fr;
+  }
+}

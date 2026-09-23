@@ -100,14 +100,6 @@ exports.postlogin = [
         httpOnly: true,
         secure: false,
       });
-      // req.session.user = { id: userData.id, userType: userData.userType };
-      // req.session.save((err) => {
-      //   if (err) {
-      //     console.error("Error saving session:", err);
-      //     return res
-      //       .status(500)
-      //       .json({ success: false, errorMessage: "Error saving session" });
-      //   }
 
       if (userType == "user") {
         return res.json({ success: true, redirectTo: "/userDashboard.html" });
@@ -126,11 +118,6 @@ exports.postlogin = [
       }
     } catch (error) {
       next(error);
-      // console.error("Login error:", error);
-      // return res.status(500).json({
-      //   success: false,
-      //   errorMessage: error.message || "Internal server error",
-      // });
     }
   },
 ];
@@ -261,18 +248,12 @@ exports.postsignup = [
         });
       }
       next(err);
-      // res.status(500).json({ success: false, message: err.message });
     }
   },
 ];
 
 exports.logout = (req, resp, next) => {
   try {
-    // if (!req.session) {
-    //   return resp
-    //     .status(400)
-    //     .json({ success: false, message: "No active session" });
-    // }
     resp.clearCookie("token", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // only send over HTTPS in prod
@@ -283,24 +264,7 @@ exports.logout = (req, resp, next) => {
       message: "Logged out successfully",
       redirectTo: "login.html",
     });
-    // req.session.destroy((err) => {
-    //   if (err) {
-    //     console.error("Error destroying session:", err);
-    //     return resp
-    //       .status(500)
-    //       .json({ success: false, message: "Error logging out" });
-    //   }
-
-    //   resp.clearCookie("session_cookie_name");
-    //   resp.json({
-    //     success: true,
-    //     message: "Logged out successfully",
-    //     redirectTo: "login.html",
-    //   });
-    // });
   } catch (error) {
     next(error);
-    // console.error("Error in logout:", error);
-    // resp.status(500).json({ success: false, message: "Internal server error" });
   }
 };

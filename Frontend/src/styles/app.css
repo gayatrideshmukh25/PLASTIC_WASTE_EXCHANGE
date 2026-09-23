@@ -1,0 +1,21 @@
+/* Small additions needed by the React version (nothing here changes the original look). */
+
+/* Native <button class="btn"> (Accept / Redeem / Proceed to Pay ...) gets a pointer cursor. */
+button.btn { cursor: pointer; }
+button.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* The Logout control in the profile modal is a real <button> now (it was an <a> with no href). */
+.profile-content button.btn { font-family: inherit; }
+
+/* Loading / error / empty-state notes. */
+.status-note {
+  color: #5e548e;
+  font-weight: 600;
+  text-align: center;
+  margin: 1rem 0;
+}
+.status-note.is-error { color: #9b2c2c; }
+.status-note.is-empty { color: gray; font-size: 1.2rem; }
+
+/* Signup: the original had a .success element with no styling at all. */
+:where(.page-auth) .success { color: #065f46; font-weight: 600; }

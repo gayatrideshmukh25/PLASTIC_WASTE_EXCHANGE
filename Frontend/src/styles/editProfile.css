@@ -1,0 +1,224 @@
+/* Edit profile (inline <style> from editProfile.html)
+   Scoped with :where(.page-edit-profile) (zero specificity) so it cannot leak onto other pages. */
+
+:where(.page-edit-profile) main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 2rem 1rem;
+}
+
+:where(.page-edit-profile) .profile-card {
+  width: 100%;
+  max-width: 600px;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(161, 140, 209, 0.1);
+  padding: 2.5rem 2rem;
+  margin: 2rem auto;
+  transition: box-shadow 0.3s;
+}
+
+:where(.page-edit-profile) .profile-card:hover {
+  box-shadow: 0 12px 32px rgba(123, 47, 242, 0.12);
+}
+
+:where(.page-edit-profile) .profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #e0d7f7;
+}
+
+:where(.page-edit-profile) .profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7b2ff2, #ff61a6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2rem;
+  box-shadow: 0 4px 12px rgba(123, 47, 242, 0.16);
+}
+
+:where(.page-edit-profile) .profile-info h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #7b2ff2;
+  font-weight: 700;
+}
+
+:where(.page-edit-profile) .profile-info p {
+  margin: 0.3rem 0 0 0;
+  color: #5e548e;
+  font-size: 0.95rem;
+}
+
+:where(.page-edit-profile) .form-section {
+  margin-bottom: 2rem;
+}
+
+:where(.page-edit-profile) .form-section h3 {
+  color: #5e548e;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e0d7f7;
+}
+
+:where(.page-edit-profile) form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+:where(.page-edit-profile) label {
+  font-size: 1rem;
+  margin-bottom: 6px;
+  display: block;
+  color: #5e548e;
+  font-weight: 500;
+}
+
+:where(.page-edit-profile) input,
+:where(.page-edit-profile) select,
+:where(.page-edit-profile) textarea {
+  width: 90%;
+  padding: 0.9rem 1rem;
+  border: 1.5px solid #e0d7f7;
+  border-radius: 12px;
+  font-size: 1rem;
+  background: #f3e8ff;
+  color: #5e548e;
+  transition: border 0.2s, box-shadow 0.2s;
+  resize: none;
+}
+
+:where(.page-edit-profile) input:focus,
+:where(.page-edit-profile) select:focus,
+:where(.page-edit-profile) textarea:focus {
+  border: 1.5px solid #7b2ff2;
+  outline: none;
+  background: #fff;
+  box-shadow: 0 0 0 2px #e0d7f7;
+}
+
+:where(.page-edit-profile) input:disabled {
+  background: #f0f0f0;
+  cursor: not-allowed;
+  color: #999;
+}
+
+:where(.page-edit-profile) textarea {
+  min-height: 90px;
+  resize: vertical;
+  grid-column: 1 / -1;
+}
+
+:where(.page-edit-profile) .full {
+  grid-column: 1 / -1;
+}
+
+:where(.page-edit-profile) .actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 1.5rem;
+}
+
+:where(.page-edit-profile) button {
+  background: #7b2ff2;
+  color: #fff;
+  border: none;
+  padding: 0.9rem 1.8rem;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  box-shadow: 0 2px 8px rgba(123, 47, 242, 0.08);
+}
+
+:where(.page-edit-profile) button:hover {
+  background: #ff61a6;
+  box-shadow: 0 4px 16px rgba(255, 97, 166, 0.16);
+  transform: translateY(-2px);
+}
+
+:where(.page-edit-profile) .btn-secondary {
+  background: #fff;
+  color: #7b2ff2;
+  border: 2px solid #7b2ff2;
+}
+
+:where(.page-edit-profile) .btn-secondary:hover {
+  background: #f3e8ff;
+  color: #ff61a6;
+  border-color: #ff61a6;
+}
+
+:where(.page-edit-profile) .msg {
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  grid-column: 1 / -1;
+  display: none;
+}
+
+:where(.page-edit-profile) .msg.success {
+  background: #e6fffa;
+  color: #065f46;
+  border-left: 4px solid #10b981;
+  display: block;
+}
+
+:where(.page-edit-profile) .msg.error {
+  background: #ffe6e6;
+  color: #9b2c2c;
+  border-left: 4px solid #ef4444;
+  display: block;
+}
+
+:where(.page-edit-profile) footer {
+  background: #fff;
+  color: #7b2ff2;
+  padding: 1.2rem 0 1rem 0;
+  text-align: center;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  border-top: 1px solid #e0d7f7;
+  box-shadow: 0 -2px 12px rgba(161, 140, 209, 0.06);
+  margin-top: 2rem;
+}
+
+@media (max-width: 700px) {
+  :where(.page-edit-profile) form {
+    grid-template-columns: 1fr;
+  }
+
+  :where(.page-edit-profile) .profile-card {
+    padding: 1.5rem 1rem;
+  }
+
+  :where(.page-edit-profile) .profile-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  :where(.page-edit-profile) .actions {
+    flex-direction: column;
+  }
+
+  :where(.page-edit-profile) button {
+    width: 100%;
+  }
+}
